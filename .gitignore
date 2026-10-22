@@ -42,3 +42,4 @@ coverage/
 .pytest_cache/
 htmlcov/
 .coverage
+tools/realesrgan/
