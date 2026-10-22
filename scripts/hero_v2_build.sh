@@ -26,10 +26,24 @@ W_MOB=960;  Q_MOB=66        # mobile, both
 
 # --- Third-party wedding banner -------------------------------------------
 # A real client's names and photographs appear on a banner by the doors.
+#
+# TWO defences, because the first version of this leaked. The mask was sized
+# from two sampled frames; in a third frame the camera angle put the banner
+# ~150px higher and a face sat ABOVE the box, sharp and identifiable — and
+# Real-ESRGAN had sharpened it further. Sampling was not enough.
+#
+#   1. PRIMARY: the shot windows below avoid the banner entirely. Measured
+#      entry/exit: clipC from ~2.70s, original clip until ~20.40s.
+#   2. SAFETY NET: this mask, sized from the worst observed position with
+#      margin. It is currently DISABLED on every shot (the mask column is 0)
+#      because once the windows avoid the banner, the blur only destroys a
+#      quarter of the frame for no benefit. Set the column to 1 on any shot
+#      whose window is retimed back over the banner, and re-verify.
+#
 # Feathered blur, not a solid box: right and bottom coincide with the frame
 # edge (feathering those would let it reappear at the border), left and top
 # are feathered so it reads as edge falloff rather than a redaction.
-BX=1120; BY=650; BW=800; BH=430; BF=110
+BX=1000; BY=380; BW=920; BH=700; BF=120
 banner_mask() {
   printf 'split[bmA][bmB];[bmB]crop=%d:%d:%d:%d,avgblur=30,avgblur=30,format=yuva420p,geq=r=%s:g=%s:b=%s:a=%s[bmC];[bmA][bmC]overlay=%d:%d' \
     "$BW" "$BH" "$BX" "$BY" "'r(X,Y)'" "'g(X,Y)'" "'b(X,Y)'" \
@@ -40,9 +54,9 @@ banner_mask() {
 # name | tag | source | start | end | tier | mask(0/1)
 SHOTS=(
   "front_view|EXTERIOR-IN|clip|17.40|18.00|2|0"
-  "facade_doors|EXTERIOR-IN|rwC|2.20|3.40|1|1"
-  "crossing|THRESHOLD|clip|20.20|20.60|2|1"
-  "arch|INTERIOR|clip|20.60|23.60|2|0"
+  "facade_doors|EXTERIOR-IN|rwC|1.70|2.65|1|0"
+  "crossing|THRESHOLD|clip|20.42|20.82|2|0"
+  "arch|INTERIOR|clip|20.82|23.60|2|0"
   "aisle_hall|INTERIOR|clip|23.60|27.24|2|0"
   "hall_wide|INTERIOR|clip|27.24|29.68|2|0"
   "tables|INTERIOR|clip|30.72|32.36|2|0"

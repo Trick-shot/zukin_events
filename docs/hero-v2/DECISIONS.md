@@ -184,11 +184,29 @@ quadrant running to the frame edges:
 | exterior_C cleaned | 3.00–3.70s | ~18 |
 | original clip | 19.70–20.35s | ~16 |
 
-**Feathered blur, not a solid box.** Left and top edges feather over 110px;
-right and bottom stay hard because they coincide with the frame edge —
-feathering those would let the banner reappear at the border. It reads as
-depth-of-field falloff during a fast dolly rather than as a redaction.
-Verified on the staged output: no faces, no names, no legible text.
+**The first fix leaked, and the leak is the lesson.** I sized a feathered
+blur from two sampled frames. In a third frame the camera angle put the
+banner ~150px higher, so a man's face sat ABOVE the box — sharp, identifiable,
+and *sharpened further by Real-ESRGAN*, which made it more identifiable than
+the source. Sampling two frames to bound a moving object was the error; it
+only surfaced because I looked at the staged output rather than trusting the
+earlier verification.
+
+**The fix is to avoid the frames, not to blur them.** Measured entry and exit
+at 1:1 on the right edge:
+
+| Source | Banner present | Window now used |
+| --- | --- | --- |
+| exterior_C cleaned | from ~2.70s | 1.70-2.65 |
+| original clip | until ~20.40s | 20.42-20.82 |
+
+Both windows are now banner-free by measurement, and **every frame** of the
+two risky shots is checked, not a sample. The parking clip is clean (no
+banner, no people, no signage).
+
+The feathered-blur mask is kept in the script but DISABLED on every shot:
+once the windows avoid the banner it only destroys a quarter of the frame
+for no benefit. Re-enable it on any shot retimed back over the banner.
 
 ---
 
