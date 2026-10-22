@@ -1,0 +1,68 @@
+{
+  "//": "TODO: review — first-draft Swahili, not reviewed by a native speaker or the client. Erick to check with the owner before launch.",
+  "meta": {
+    "title": "Zukin Hall — Ukumbi wa matukio na mapambo, Dodoma",
+    "description": "Zukin Hall ni ukumbi wa matukio na huduma ya mapambo Dodoma, Tanzania. Harusi, send-off, kitchen party, siku za kuzaliwa na matukio ya kikazi."
+  },
+  "a11y": {
+    "skipToContent": "Rukia hadi maudhui",
+    "skipToBooking": "Rukia hadi uwekaji nafasi",
+    "mainNav": "Menyu kuu",
+    "footerNav": "Menyu ya chini",
+    "language": "Lugha"
+  },
+  "nav": {
+    "spaces": "Kumbi",
+    "events": "Matukio",
+    "decoration": "Mapambo",
+    "gallery": "Picha",
+    "availability": "Upatikanaji",
+    "contact": "Mawasiliano"
+  },
+  "actions": {
+    "checkAvailability": "Angalia upatikanaji",
+    "bookSiteVisit": "Panga ziara ya ukumbi",
+    "trackBooking": "Fuatilia nafasi yangu"
+  },
+  "brand": {
+    "name": "Zukin Hall",
+    "line1": "ZUKIN",
+    "line2": "HALL",
+    "tagline": "Ukumbi wa matukio na mapambo, Dodoma."
+  },
+  "footer": {
+    "explore": "Tazama",
+    "booking": "Kuweka nafasi",
+    "contact": "Mawasiliano",
+    "call": "Piga simu",
+    "whatsapp": "WhatsApp",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "copyright": "© Zukin Hall",
+    "builtBy": "Imetengenezwa na Trickshot Software"
+  },
+  "book": {
+    "eyebrow": "Kuweka nafasi",
+    "title": "Uwekaji nafasi unafunguliwa hivi karibuni",
+    "body": "Uwekaji nafasi mtandaoni bado haujaanza. Piga simu au tutumie ujumbe na mapokezi watashikilia tarehe yako.",
+    "yourSelection": "Uliyochagua",
+    "backHome": "Rudi ukurasa wa mwanzo",
+    "fields": {
+      "date": "Tarehe",
+      "space": "Ukumbi",
+      "eventType": "Aina ya tukio",
+      "guests": "Wageni",
+      "mode": "Ombi"
+    },
+    "modes": {
+      "availability": "Angalia upatikanaji",
+      "visit": "Panga ziara ya ukumbi",
+      "track": "Fuatilia nafasi yangu"
+    }
+  },
+  "notFound": {
+    "title": "Ukurasa haupatikani",
+    "body": "Ukurasa huo haupo.",
+    "backHome": "Rudi ukurasa wa mwanzo"
+  }
+}
