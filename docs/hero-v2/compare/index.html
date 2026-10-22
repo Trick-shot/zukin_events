@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zukin Hall — original vs Tier 1 vs Tier 2</title>
+<style>
+  :root { --bg:#fbf7f2; --ink:#1c1217; --muted:#6b5a63; --line:#e8ddd5; --gold:#c8a24a; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14070f; --ink:#e8d8e0; --muted:#b8a3ae; --line:#3a2430; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:24px; background:var(--bg); color:var(--ink);
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+  h1 { font-size:22px; margin:0 0 6px; }
+  h2 { font-size:18px; margin:36px 0 2px; }
+  h2 .t { color:var(--muted); font-weight:400; font-size:14px; }
+  h3 { font-size:13px; text-transform:uppercase; letter-spacing:.14em;
+    color:var(--gold); margin:22px 0 8px; }
+  p.note, p.lede { color:var(--muted); margin:0 0 10px; max-width:74ch; }
+  section { border-top:1px solid var(--line); padding-top:4px; }
+  .trio { display:flex; gap:12px; flex-wrap:wrap; }
+  .trio.small img { width:520px; height:auto; }
+  figure { margin:0; }
+  figure img { display:block; border-radius:3px; max-width:100%; height:auto; }
+  figcaption { font-size:12px; color:var(--muted); padding-top:4px; }
+</style></head><body>
+<h1>Original vs Tier 1 vs Tier 2</h1>
+<p class="lede">Crops are 460x460 at 1:1 from the 1600px delivery frames —
+no browser scaling, so this is the pixels that ship. Tier 2 is Real-ESRGAN
+x4 on the Tier 1 frame, resampled back to 1600px.</p>
+<section><h2>sign <span class="t">@ 17.60s</span></h2><p class="note">the red ZUKIN HALL lettering and brick</p><div class="trio small"><figure><img src="crops/sign_t0_full.jpg"><figcaption>Original</figcaption></figure><figure><img src="crops/sign_t1_full.jpg"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/sign_t2_full.jpg"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div><h3>lettering + brick</h3><div class="trio"><figure><img src="crops/sign_0_t0.jpg" width="460" height="460"><figcaption>Original</figcaption></figure><figure><img src="crops/sign_0_t1.jpg" width="460" height="460"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/sign_0_t2.jpg" width="460" height="460"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div><h3>window frames</h3><div class="trio"><figure><img src="crops/sign_1_t0.jpg" width="460" height="460"><figcaption>Original</figcaption></figure><figure><img src="crops/sign_1_t1.jpg" width="460" height="460"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/sign_1_t2.jpg" width="460" height="460"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div></section><section><h2>arch <span class="t">@ 22.20s</span></h2><p class="note">white flower arch, fine petal detail</p><div class="trio small"><figure><img src="crops/arch_t0_full.jpg"><figcaption>Original</figcaption></figure><figure><img src="crops/arch_t1_full.jpg"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/arch_t2_full.jpg"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div><h3>petals on the arch</h3><div class="trio"><figure><img src="crops/arch_0_t0.jpg" width="460" height="460"><figcaption>Original</figcaption></figure><figure><img src="crops/arch_0_t1.jpg" width="460" height="460"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/arch_0_t2.jpg" width="460" height="460"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div><h3>chairs + table</h3><div class="trio"><figure><img src="crops/arch_1_t0.jpg" width="460" height="460"><figcaption>Original</figcaption></figure><figure><img src="crops/arch_1_t1.jpg" width="460" height="460"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/arch_1_t2.jpg" width="460" height="460"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div></section><section><h2>hall <span class="t">@ 26.00s</span></h2><p class="note">ceiling flowers and chair backs</p><div class="trio small"><figure><img src="crops/hall_t0_full.jpg"><figcaption>Original</figcaption></figure><figure><img src="crops/hall_t1_full.jpg"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/hall_t2_full.jpg"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div><h3>ceiling flowers</h3><div class="trio"><figure><img src="crops/hall_0_t0.jpg" width="460" height="460"><figcaption>Original</figcaption></figure><figure><img src="crops/hall_0_t1.jpg" width="460" height="460"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/hall_0_t2.jpg" width="460" height="460"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div><h3>chair backs</h3><div class="trio"><figure><img src="crops/hall_1_t0.jpg" width="460" height="460"><figcaption>Original</figcaption></figure><figure><img src="crops/hall_1_t1.jpg" width="460" height="460"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/hall_1_t2.jpg" width="460" height="460"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div></section><section><h2>aerial <span class="t">@ 10.50s</span></h2><p class="note">roof edge, render, distant buildings</p><div class="trio small"><figure><img src="crops/aerial_t0_full.jpg"><figcaption>Original</figcaption></figure><figure><img src="crops/aerial_t1_full.jpg"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/aerial_t2_full.jpg"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div><h3>roof edge + render</h3><div class="trio"><figure><img src="crops/aerial_0_t0.jpg" width="460" height="460"><figcaption>Original</figcaption></figure><figure><img src="crops/aerial_0_t1.jpg" width="460" height="460"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/aerial_0_t2.jpg" width="460" height="460"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div><h3>distant buildings</h3><div class="trio"><figure><img src="crops/aerial_1_t0.jpg" width="460" height="460"><figcaption>Original</figcaption></figure><figure><img src="crops/aerial_1_t1.jpg" width="460" height="460"><figcaption>Tier 1 (ffmpeg)</figcaption></figure><figure><img src="crops/aerial_1_t2.jpg" width="460" height="460"><figcaption>Tier 2 (Real-ESRGAN)</figcaption></figure></div></section>
+</body></html>

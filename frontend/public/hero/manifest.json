@@ -1,0 +1,82 @@
+{
+  "version": 2,
+  "frames": 168,
+  "fps": 10.0,
+  "pattern": "f_%04d.webp",
+  "pinVh": 650,
+  "dissolve": 0.6,
+  "variants": {
+    "desktop": {
+      "folder": "d",
+      "width": 1600
+    },
+    "mobile": {
+      "folder": "m",
+      "width": 960
+    }
+  },
+  "intro": {
+    "mp4": "intro.mp4",
+    "webm": "intro.webm",
+    "poster": "intro-poster.jpg",
+    "posterMobile": "intro-poster-960.jpg",
+    "handoffNote": "intro ends at source 18.60s; journey frame 1 is source 16.90s"
+  },
+  "source": "assets-src/zukin_clip.mp4, Tier 1 graded. Regenerate with scripts/build_hero_assets.sh journey",
+  "chapters": [
+    {
+      "id": "walkin",
+      "scrollFrom": 0.0,
+      "scrollTo": 0.3692,
+      "frameFrom": 1,
+      "frameTo": 103,
+      "vh": 240,
+      "note": "CONTINUOUS: sign -> doors -> arch -> aisle -> hall"
+    },
+    {
+      "id": "hall_wide",
+      "scrollFrom": 0.3692,
+      "scrollTo": 0.5,
+      "frameFrom": 98,
+      "frameTo": 115,
+      "vh": 85,
+      "note": "the hall, tables laid, wide"
+    },
+    {
+      "id": "table_setting",
+      "scrollFrom": 0.5,
+      "scrollTo": 0.6308,
+      "frameFrom": 110,
+      "frameTo": 129,
+      "vh": 85,
+      "note": "charger plate, napkin, glasses, centrepiece"
+    },
+    {
+      "id": "ceiling",
+      "scrollFrom": 0.6308,
+      "scrollTo": 0.7615,
+      "frameFrom": 124,
+      "frameTo": 145,
+      "vh": 85,
+      "note": "chandelier and hanging flowers"
+    },
+    {
+      "id": "stage",
+      "scrollFrom": 0.7615,
+      "scrollTo": 0.8923,
+      "frameFrom": 140,
+      "frameTo": 159,
+      "vh": 85,
+      "note": "stage, gold sofa, flower walls"
+    },
+    {
+      "id": "aisle",
+      "scrollFrom": 0.8923,
+      "scrollTo": 1.0,
+      "frameFrom": 154,
+      "frameTo": 167,
+      "vh": 70,
+      "note": "aisle arch and walkway \u2014 journey ends here, inside"
+    }
+  ]
+}
