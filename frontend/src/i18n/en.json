@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "title": "Zukin Hall — Event venue and decoration in Dodoma",
+    "description": "Zukin Hall is an event venue and decoration service in Dodoma, Tanzania. Weddings, send-offs, kitchen parties, birthdays and corporate events."
+  },
+  "a11y": {
+    "skipToContent": "Skip to content",
+    "skipToBooking": "Skip to booking",
+    "mainNav": "Main navigation",
+    "footerNav": "Footer navigation",
+    "language": "Language"
+  },
+  "nav": {
+    "spaces": "Spaces",
+    "events": "Events",
+    "decoration": "Decoration",
+    "gallery": "Gallery",
+    "availability": "Availability",
+    "contact": "Contact"
+  },
+  "actions": {
+    "checkAvailability": "Check availability",
+    "bookSiteVisit": "Book a site visit",
+    "trackBooking": "Track my booking"
+  },
+  "brand": {
+    "name": "Zukin Hall",
+    "line1": "ZUKIN",
+    "line2": "HALL",
+    "tagline": "Event venue and decoration in Dodoma."
+  },
+  "footer": {
+    "explore": "Explore",
+    "booking": "Booking",
+    "contact": "Contact",
+    "call": "Call",
+    "whatsapp": "WhatsApp",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "copyright": "© Zukin Hall",
+    "builtBy": "Built by Trickshot Software"
+  },
+  "book": {
+    "eyebrow": "Booking",
+    "title": "Booking opens soon",
+    "body": "Online booking is not live yet. Call or message us and reception will hold your date.",
+    "yourSelection": "Your selection",
+    "backHome": "Back to the home page",
+    "fields": {
+      "date": "Date",
+      "space": "Space",
+      "eventType": "Event type",
+      "guests": "Guests",
+      "mode": "Request"
+    },
+    "modes": {
+      "availability": "Check availability",
+      "visit": "Book a site visit",
+      "track": "Track my booking"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "That page does not exist.",
+    "backHome": "Back to the home page"
+  }
+}

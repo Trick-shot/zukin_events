@@ -1,0 +1,53 @@
+/**
+ * ZUKIN HALL design tokens.
+ *
+ * Tailwind v4 reads `@theme` and generates utilities from each custom property
+ * (`--color-gold` -> `text-gold`, `bg-gold`, `border-gold`, ...). The same
+ * properties are also emitted as real CSS variables on `:root`, which is why
+ * the radial glows and gradients further down can reference them directly.
+ * This is the v4 equivalent of the "tokens in the Tailwind config" rule in the
+ * brief: one source of truth, never a hex literal inside a component.
+ */
+@theme {
+  /* --- Palette (from the brief) --- */
+  --color-red: #d6213b;
+  --color-magenta: #a8185f;
+  --color-pink: #f2a6c8;
+  --color-gold: #c8a24a;
+  --color-plum: #2b0f22;
+  --color-cream: #fbf7f2;
+  --color-ink: #1c1217;
+  --color-muted: #6b5a63;
+  --color-line: #e8ddd5;
+
+  /* --- Palette (measured off the Figma frame, not in the brief) ---
+     The footer sits on a deeper plum than the hero, and dark sections need
+     three tints of "text on dark" that the brief's `muted` cannot cover
+     (it is tuned for cream backgrounds and fails contrast on plum). */
+  --color-plum-deep: #14070f;
+  --color-on-dark: #e8d8e0;
+  --color-on-dark-muted: #b8a3ae;
+  --color-on-dark-faint: #9c8793;
+
+  /* --- Type --- */
+  --font-display: 'Playfair Display Variable', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* --- Radii --- */
+  --radius-card: 24px;
+  --radius-card-sm: 20px;
+  --radius-pill: 999px;
+  --radius-mark: 4px;
+
+  /* --- Layout ---
+     1280px of content inside 80px gutters is exactly the 1440 Figma frame. */
+  --container-site: 80rem;
+
+  /* --- Breakpoints ---
+     The brief names 360 / 768 / 1024 / 1440. 360 is the mobile-first base, so
+     it needs no query; md and lg already match Tailwind's defaults; xl is
+     moved from 1280 to 1440 so `xl:` means "the Figma desktop frame".
+     2xl is removed so nothing silently targets a width we have no design for. */
+  --breakpoint-xl: 90rem;
+  --breakpoint-2xl: initial;
+}
