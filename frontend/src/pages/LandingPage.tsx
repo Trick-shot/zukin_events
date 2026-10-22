@@ -2,6 +2,7 @@ import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
 import { Eyebrow } from '@/components/ui/Eyebrow'
 import { Glow } from '@/components/ui/Glow'
+import { HeroSection } from '@/features/hero/HeroSection'
 
 /**
  * Milestone (a) ships the shell only. Each placeholder below owns the id and
@@ -10,7 +11,6 @@ import { Glow } from '@/components/ui/Glow'
  * body of one block at a time.
  */
 const PLACEHOLDER_SECTIONS = [
-  { id: 'hero', tone: 'plum', label: '1 Hero', note: 'Pinned scroll-scrubbed sequence — milestone (c)' },
   { id: 'marquee', tone: 'plum', label: '2 Marquee band', note: 'Milestone (d)' },
   { id: 'intro', tone: 'cream', label: '3 Intro', note: 'Milestone (d)' },
   { id: 'spaces', tone: 'cream', label: '4 Spaces', note: 'Milestone (d)' },
@@ -26,6 +26,8 @@ const PLACEHOLDER_SECTIONS = [
 export function LandingPage() {
   return (
     <>
+      <HeroSection />
+
       {PLACEHOLDER_SECTIONS.map((section, index) => (
         <Section
           key={section.id}
