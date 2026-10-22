@@ -129,10 +129,40 @@ removed so nothing can silently target a width we have no design for.
 | --- | --- | --- | --- |
 | a | Scaffolding, tokens, fonts, layout shell | `feat/scaffolding` | ✅ |
 | b | Django models, API, seed, tests | `feat/backend-api` | |
-| c | Pinned scroll-scrubbed hero + booking bar | `feat/hero` | |
+| c | Pinned scroll-scrubbed hero + booking bar | `feat/hero` | ✅ |
 | d | Marquee, intro, spaces, events, decoration | `feat/sections-mid` | |
 | e | Gallery, availability, how-it-works, location, CTA | `feat/sections-late` | |
 | f | i18n, responsive, a11y, SEO passes | `feat/polish` | |
+
+---
+
+## Hero sequence
+
+The hero is a pre-rendered image sequence scrubbed by scroll, not video and
+not 3D. Frames live in `frontend/public/hero-sequence/` as `d/` (1280px) and
+`m/` (720px), with `manifest.json` holding the frame count, the file-name
+pattern, the story beats and the usable scrub range.
+
+**Nothing in the code knows the frame count, the pattern or the beats** — the
+manifest is fetched at runtime, so a new walkthrough is a drop-in replacement
+of the frames plus the manifest, with no rebuild.
+
+`scrub` caps which frames play. The current placeholder clip fades to black
+over frames 163-165, so it is set to `1-162`; widen it when real footage
+replaces these frames.
+
+Measured against the committed placeholder frames:
+
+| | Desktop (`d/`) | Mobile (`m/`) |
+| --- | --- | --- |
+| Mean frame size | 57.9 KB | 25.7 KB |
+| Frames loaded eagerly | 12 | 15 |
+| **Initial payload** | **486 KB** | **286 KB** |
+| Full scrub range | 9.4 MB | 4.2 MB |
+
+The eager count differs per variant because 15 desktop frames measure 652 KB,
+over the brief's ~600 KB budget. The full range downloads in the background;
+Save-Data and 2g force the mobile set regardless of viewport.
 
 ---
 

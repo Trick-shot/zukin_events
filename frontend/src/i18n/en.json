@@ -63,5 +63,34 @@
     "title": "Page not found",
     "body": "That page does not exist.",
     "backHome": "Back to the home page"
+  },
+  "hero": {
+    "heading": "Zukin Hall — event venue and decoration in Dodoma",
+    "eyebrow": "Event venue and decoration · Dodoma",
+    "canvasLabel": "A walkthrough of Zukin Hall: arriving at the gate, the paved yard, the red sign and entrance, the decorated hall, the stage and aisle.",
+    "loading": "Loading the venue tour…",
+    "unavailable": "The venue tour could not load."
+  },
+  "bookingBar": {
+    "tabsLabel": "What would you like to do?",
+    "eventDate": "Event date",
+    "space": "Space",
+    "eventType": "Event type",
+    "guests": "Guests",
+    "selectSpace": "Select space",
+    "selectEventType": "Wedding, send-off…",
+    "numberOfGuests": "Number of guests"
+  },
+  "spaces": {
+    "mainHall": "Main hall",
+    "secondSpace": "Second space"
+  },
+  "eventTypes": {
+    "weddings": "Weddings",
+    "sendOffs": "Send-offs",
+    "kitchenParties": "Kitchen parties",
+    "birthdays": "Birthdays",
+    "corporate": "Corporate events",
+    "decoration": "Decoration"
   }
 }

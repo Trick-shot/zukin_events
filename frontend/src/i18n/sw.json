@@ -64,5 +64,34 @@
     "title": "Ukurasa haupatikani",
     "body": "Ukurasa huo haupo.",
     "backHome": "Rudi ukurasa wa mwanzo"
+  },
+  "hero": {
+    "heading": "Zukin Hall — ukumbi wa matukio na mapambo, Dodoma",
+    "eyebrow": "Ukumbi wa matukio na mapambo · Dodoma",
+    "canvasLabel": "Ziara ya Zukin Hall: kuwasili getini, uwanja, alama nyekundu na lango, ukumbi uliopambwa, jukwaa na njia ya bibi harusi.",
+    "loading": "Inapakia ziara ya ukumbi…",
+    "unavailable": "Ziara ya ukumbi haikuweza kupakia."
+  },
+  "bookingBar": {
+    "tabsLabel": "Ungependa kufanya nini?",
+    "eventDate": "Tarehe ya tukio",
+    "space": "Ukumbi",
+    "eventType": "Aina ya tukio",
+    "guests": "Wageni",
+    "selectSpace": "Chagua ukumbi",
+    "selectEventType": "Harusi, send-off…",
+    "numberOfGuests": "Idadi ya wageni"
+  },
+  "spaces": {
+    "mainHall": "Ukumbi mkuu",
+    "secondSpace": "Ukumbi wa pili"
+  },
+  "eventTypes": {
+    "weddings": "Harusi",
+    "sendOffs": "Send-off",
+    "kitchenParties": "Kitchen party",
+    "birthdays": "Siku za kuzaliwa",
+    "corporate": "Matukio ya kikazi",
+    "decoration": "Mapambo"
   }
 }
