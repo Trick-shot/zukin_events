@@ -16,6 +16,15 @@ dist-ssr/
 .vite/
 *.local
 
+# --- Source footage ---
+# Camera originals: large, not web assets, and regenerable outputs live in
+# frontend/public/hero/. Only scripts/build_hero_assets.sh and its outputs
+# are committed.
+/assets-src/
+
+# Scratch dir for the hero asset pipeline; regenerable, safe to delete.
+/.hero-build/
+
 # --- Env ---
 .env
 .env.*
@@ -33,3 +42,4 @@ coverage/
 .pytest_cache/
 htmlcov/
 .coverage
+tools/realesrgan/
