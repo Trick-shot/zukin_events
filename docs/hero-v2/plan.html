@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zukin Hall — hero v2 shot map and plan</title>
+<style>
+ :root{--bg:#fbf7f2;--ink:#1c1217;--muted:#6b5a63;--line:#e8ddd5;--gold:#c8a24a;--red:#d6213b}
+ @media (prefers-color-scheme:dark){:root{--bg:#14070f;--ink:#e8d8e0;--muted:#b8a3ae;--line:#3a2430}}
+ *{box-sizing:border-box}
+ body{margin:0;padding:24px;background:var(--bg);color:var(--ink);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+ h1{font-size:23px;margin:0 0 6px}
+ h2{font-size:13px;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin:34px 0 10px}
+ p.lede{color:var(--muted);max-width:80ch;margin:0 0 10px}
+ table{border-collapse:collapse;width:100%;font-size:13px}
+ th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+ td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+ .tag{display:inline-block;padding:2px 7px;border-radius:4px;color:#fff;font-weight:700;
+  font-size:10px;letter-spacing:.06em;white-space:nowrap}
+ .t-exteriorin .tag{background:#2f6f9f} .t-threshold .tag{background:#c8a24a}
+ .t-interior .tag{background:#b0246b} .t-thresholdout .tag{background:#8a6d2f}
+ .t-exteriorout .tag{background:#3f7f5f} .t-finale .tag{background:var(--red)}
+ .eyebrow{color:var(--gold);font-size:11px;letter-spacing:.14em;font-weight:700}
+ .verdict{padding:12px 14px;border-radius:8px;font-weight:600;margin:10px 0}
+ .pass{background:color-mix(in oklab,#2e9e5b 16%,transparent);border:1px solid #2e9e5b}
+ .warn{background:color-mix(in oklab,var(--gold) 20%,transparent);border:1px solid var(--gold)}
+ .trio{display:flex;gap:14px;flex-wrap:wrap}
+ figure{margin:0;max-width:600px}
+ figure img{width:100%;border-radius:4px;display:block;border:3px solid transparent}
+ figure.pick img{border-color:#2e9e5b} figure.bad img{border-color:var(--red);opacity:.55}
+ figcaption{font-size:12px;color:var(--muted);padding-top:5px}
+ ul{color:var(--muted);max-width:88ch} li{margin-bottom:5px}
+</style></head><body>
+<h1>Hero v2 — shot map and plan</h1>
+<p class="lede">Steps 1 and 2. Nothing is rendered yet; this is the thing to approve
+before the frame pipeline runs.</p>
+
+<h2>1 · Front-view frame (section I)</h2>
+<p class="lede">Measured on a 10% gridline overlay. Section I wants the sign fully
+visible, centred horizontally, and 12–20% of frame width.</p>
+<div class="trio"><figure class="pick"><img src="front/cand_A.jpg"><figcaption><b>A — original 17.40s</b> ← recommended<br>sign width <b>16.9%</b>, centring +1%<br>mid-band and well centred; from the raw clip so slightly softer</figcaption></figure><figure class=""><img src="front/cand_B.jpg"><figcaption><b>B — runway C 1.80s</b><br>sign width <b>19.4%</b>, centring +2%<br>visibly cleaner brick and lettering; at the TOP of the 12-20% band</figcaption></figure><figure class="bad"><img src="front/cand_C.jpg"><figcaption><b>C — runway C 2.40s</b><br>sign width <b>21.1%</b>, centring 0%<br>REJECTED: 21.1% exceeds the 20% cap and the facade is cropped</figcaption></figure></div>
+
+<h2>2 · Interior inventory (section G.2)</h2>
+<div class="verdict warn"><b>9 distinct interior views</b> ·
+27.20s total · <b>24.20s usable</b> (takes ≥1.2s)</div>
+<table><tr><th>#</th><th>Distinct view</th><th>Total</th><th>Usable</th><th>Source</th></tr><tr><td>1</td><td>Foyer, inside the doors</td><td class="n">1.00s</td><td class="n">0.00s</td><td>walk-in</td></tr><tr><td>2</td><td>Floral arch, approach and passage</td><td class="n">2.00s</td><td class="n">2.00s</td><td>walk-in</td></tr><tr><td>3</td><td>Aisle toward the stage</td><td class="n">2.00s</td><td class="n">2.00s</td><td>walk-in</td></tr><tr><td>4</td><td>Hall from the aisle, ceiling overhead</td><td class="n">1.64s</td><td class="n">1.64s</td><td>walk-in</td></tr><tr><td>5</td><td>Hall wide, tables laid</td><td class="n">3.48s</td><td class="n">2.44s</td><td>seg 12, 13</td></tr><tr><td>6</td><td>Table setting close</td><td class="n">2.60s</td><td class="n">1.64s</td><td>seg 14, 15</td></tr><tr><td>7</td><td>Ceiling, chandelier and blossoms</td><td class="n">3.56s</td><td class="n">3.56s</td><td>seg 18</td></tr><tr><td>8</td><td>Stage, gold sofa and floral walls</td><td class="n">9.28s</td><td class="n">9.28s</td><td>seg 16, 17, 19, 20</td></tr><tr><td>9</td><td>Aisle with arch, walkway</td><td class="n">1.64s</td><td class="n">1.64s</td><td>seg 21</td></tr></table>
+
+<h2>3 · Scroll order (section L)</h2>
+<div class="verdict pass">
+Tag order PASSES EXTERIOR-IN → THRESHOLD → INTERIOR →
+THRESHOLD-OUT → EXTERIOR-OUT → FINALE<br>
+Interior scroll share (interior + reversed exit): <b>71%</b> of 100%
+— inside the 65–75% band</div>
+<table><tr><th>Where</th><th>Shot</th><th>Source</th><th>Range</th><th>Scroll</th>
+<th>Progress</th><th>Note</th></tr><tr class="t-exteriorin"><td><span class="tag">EXTERIOR-IN</span></td><td><b>front_view</b></td><td>runway C</td><td class="n">1.60-2.20s</td><td class="n">5%</td><td class="n">0.000–0.050</td><td>frame 1 = the held front view; matches the intro's last frame exactly</td></tr><tr class="t-exteriorin"><td><span class="tag">EXTERIOR-IN</span></td><td><b>facade_doors</b></td><td>runway C</td><td class="n">2.20-3.40s</td><td class="n">6%</td><td class="n">0.050–0.110</td><td>push in to the canopy and the wooden doors</td></tr><tr class="t-threshold"><td><span class="tag">THRESHOLD</span></td><td><b>crossing</b></td><td>clip 20.20-20.60</td><td class="n">20.20-20.60s</td><td class="n">3%</td><td class="n">0.110–0.140</td><td>the single doorway crossing, uncut</td></tr><tr class="t-interior"><td><span class="tag">INTERIOR</span></td><td><b>arch</b></td><td>clip</td><td class="n">20.60-23.60s</td><td class="n">11%</td><td class="n">0.140–0.250</td><td>foyer and the floral arch</td></tr><tr class="t-interior"><td><span class="tag">INTERIOR</span></td><td><b>aisle_hall</b></td><td>clip</td><td class="n">23.60-27.24s</td><td class="n">11%</td><td class="n">0.250–0.360</td><td>down the aisle into the hall</td></tr><tr class="t-interior"><td><span class="tag">INTERIOR</span></td><td><b>hall_wide</b></td><td>clip</td><td class="n">27.24-29.68s</td><td class="n">8%</td><td class="n">0.360–0.440</td><td>the hall, tables laid</td></tr><tr class="t-interior"><td><span class="tag">INTERIOR</span></td><td><b>tables</b></td><td>clip</td><td class="n">30.72-32.36s</td><td class="n">7%</td><td class="n">0.440–0.510</td><td>charger plate, napkin, glassware</td></tr><tr class="t-interior"><td><span class="tag">INTERIOR</span></td><td><b>ceiling</b></td><td>clip</td><td class="n">37.36-40.92s</td><td class="n">9%</td><td class="n">0.510–0.600</td><td>chandelier and hanging blossoms</td></tr><tr class="t-interior"><td><span class="tag">INTERIOR</span></td><td><b>stage</b></td><td>clip</td><td class="n">40.92-43.84s</td><td class="n">8%</td><td class="n">0.600–0.680</td><td>stage, gold sofa, floral walls</td></tr><tr class="t-interior"><td><span class="tag">INTERIOR</span></td><td><b>aisle_decor</b></td><td>clip</td><td class="n">46.16-47.80s</td><td class="n">6%</td><td class="n">0.680–0.740</td><td>aisle arch and walkway</td></tr><tr class="t-thresholdout"><td><span class="tag">THRESHOLD-OUT</span></td><td><b>exit_reverse</b></td><td>reuses arch+aisle_hall frames</td><td class="n">reversed</td><td class="n">11%</td><td class="n">0.740–0.850</td><td>walk-in played in REVERSE index; no new frames, no cut</td></tr><tr class="t-exteriorout"><td><span class="tag">EXTERIOR-OUT</span></td><td><b>parking</b></td><td>runway container (cleaned)</td><td class="n">0.00-4.04s</td><td class="n">10%</td><td class="n">0.850–0.950</td><td>courtyard, paved yard, outbuildings, access road</td></tr><tr class="t-finale"><td><span class="tag">FINALE</span></td><td><b>entrance</b></td><td>runway C</td><td class="n">1.60-2.20s</td><td class="n">5%</td><td class="n">0.950–1.000</td><td>returns to the scroll-start framing, booking prompt over it</td></tr></table>
+
+<h2>4 · Chapter copy (section K)</h2>
+<p class="lede">Every line is a placeholder for client review. ⚠ marks a claim
+that must be confirmed before launch. Copy lives in i18n keys, EN and SW.</p>
+<table><tr><th>#</th><th>Eyebrow</th><th>Title</th><th>Line</th><th>Shot</th><th>Status</th></tr><tr><td class="n">01</td><td><span class="eyebrow">ARRIVAL</span></td><td><b>A grand welcome</b></td><td>A bright foyer and a floral arch that set the tone before guests step in.</td><td>arch</td><td>seen</td></tr><tr><td class="n">02</td><td><span class="eyebrow">THE HALL</span></td><td><b>Room to celebrate</b></td><td>A spacious, open hall with polished floors and a clear central aisle.</td><td>aisle_hall</td><td>seen</td></tr><tr><td class="n">03</td><td><span class="eyebrow">FURNITURE</span></td><td><b>Dressed for every table</b></td><td>Round tables, white and gold chairs, and linens in your colours.</td><td>hall_wide</td><td>seen</td></tr><tr><td class="n">04</td><td><span class="eyebrow">DETAIL</span></td><td><b>Details guests notice</b></td><td>Gold charger plates, crystal glassware and fresh floral centrepieces.</td><td>tables</td><td>seen</td></tr><tr><td class="n">05</td><td><span class="eyebrow">LIGHTING</span></td><td><b>A ceiling worth looking up at</b></td><td>Crystal chandeliers, glowing pendants and soft draped fabric overhead.</td><td>ceiling</td><td>seen</td></tr><tr><td class="n">06</td><td><span class="eyebrow">THE STAGE</span></td><td><b>Where the moment happens</b></td><td>A styled stage with a gold sofa and chairs, floral walls and lanterns.</td><td>stage</td><td>seen</td></tr><tr><td class="n">07</td><td><span class="eyebrow">DECORATION</span></td><td><b>Styled to your story</b></td><td>Zukin decoration turns the hall into your theme, from the aisle to the ceiling.</td><td>aisle_decor</td><td>⚠ confirm packages</td></tr><tr><td class="n">08</td><td><span class="eyebrow">PARKING AND ACCESS</span></td><td><b>Room to arrive</b></td><td>Space to park and a clear approach to the entrance.</td><td>parking</td><td>⚠ confirm space count</td></tr><tr><td class="n">09</td><td><span class="eyebrow">BOOK</span></td><td><b>Reserve your date</b></td><td>Check availability and send your request.</td><td>entrance</td><td>seen</td></tr></table>
+<p class="lede"><b>Deferred:</b> K.08 SOUND AND SERVICE — needs client confirmation of sound system, air conditioning and on-site team; the footage shows speakers and a wall AC unit only incidentally.</p>
+
+<h2>5 · Shot request for the client (section G.3)</h2>
+<p class="lede">The clip does not contain these. Per G.3 they are listed rather
+than padded with repeats or invented.</p>
+<ul><li>Hall from the stage looking back toward the entrance (reverse angle)</li><li>Tables from a low side angle, guest eye-level</li><li>Bar or service area, if one exists</li><li>Lounge, restrooms or getting-ready room, if any</li><li>A slow gimbal move down the length of the hall (8-12s, uncut)</li><li>Sound system and air-conditioning shown deliberately (K.08 depends on it)</li><li>The hall dressed for a different event type, to show range</li></ul>
+</body></html>

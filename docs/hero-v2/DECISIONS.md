@@ -114,3 +114,55 @@ For comparison the current shipped set is 20.9 MB. Real-ESRGAN on the
 interior frames alone is ~1.7 h of compute at 10 fps.
 
 No decision taken — this is a trade for Erick between fidelity and weight.
+
+---
+
+## D7. Loop structure supersedes the "ends inside" rule
+**Addendum L, 2026-10-23.**
+
+The journey is now a loop: EXTERIOR-IN -> THRESHOLD -> INTERIOR ->
+THRESHOLD-OUT -> EXTERIOR-OUT (parking) -> FINALE. This replaces F.1/F.3
+("never back outside") and D.3 ("last frame inside"). The spirit of F
+survives: no RANDOM jumps, every move between inside and outside is one
+continuous, believable path.
+
+The exit is the walk-in take played at a descending frame index. No new
+frames, no cut, and spatially exact because it is literally the same camera
+path in reverse.
+
+**Reverse-safety checked** (L requires it): sampling 20.7-27.0s at 0.7s steps
+shows the interior walk-in is empty of people, with no moving objects and no
+doors opening. Reversing frame order does not mirror the image, so the stage
+signage stays readable. Safe to reverse.
+
+---
+
+## D8. The aerial moves to the intro, which is what makes the interior share work
+**Addendum H + G, 2026-10-23.**
+
+H puts the aerial orbit and the ground approach in the INTRO FILM, not the
+scroll journey. That single change is what lets the interior clear its share:
+the scroll journey now starts on the held front view and goes straight to the
+doors.
+
+Measured allocation: EXTERIOR-IN 11%, THRESHOLD 3%, INTERIOR 60%,
+THRESHOLD-OUT 11%, EXTERIOR-OUT 10%, FINALE 5%. Interior plus the reversed
+exit is **71%**, inside the 65-75% band.
+
+---
+
+## D9. Interior inventory, and what the clip does not have
+**Addendum G.2/G.3.**
+
+**9 distinct interior views, 27.20s total, 24.20s usable** (takes >=1.2s).
+
+That is enough for seven interior chapters without repeating a viewpoint. It
+is NOT enough to pad toward a higher share honestly, so per G.3 the missing
+views are listed as a client shot request in `docs/hero-v2/plan.html` rather
+than invented or looped. The most valuable asks: a reverse angle from the
+stage, a low guest-eye table shot, and one slow 8-12s uncut gimbal move down
+the hall.
+
+K.08 "SOUND AND SERVICE" is deferred: the footage shows speakers and a wall
+AC unit only incidentally, and the line claims a service the client has not
+confirmed.
