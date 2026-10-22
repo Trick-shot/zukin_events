@@ -65,3 +65,52 @@ the 103-frame walk-in is ~1 hour and ~2.4 GB before anyone has looked at it,
 and the brief says to reject the AI result outright if it goes waxy. So the
 comparison runs on four representative frames first; the full shots are
 processed only once the look is approved.
+
+---
+
+## D5. Spatial order: one crossing, never back outside
+**Addendum F, 2026-10-23. Audited in c1.**
+
+All 23 detected segments are tagged EXTERIOR / THRESHOLD / INTERIOR in
+`scripts/audit_sheet.py` and rendered to `docs/hero-v2/contact/audit.html`.
+The proposed order passes `E E E E E T I I I I I I`.
+
+The threshold is at **source 20.20s** — measured, not guessed: sampling the
+walk-in at 0.6s intervals shows the camera still under the canopy at 19.6s and
+through the wooden doors by 20.2s.
+
+The walk-in take is listed as three rows (ext / cross / int) only to show
+where it crosses. It is never cut there — it is the one uncut take in the
+sequence, which is exactly why the single doorway crossing is seamless.
+
+**The one spatial jump I could not remove** (rule 6 asks for these): frame 1 is
+the front view at 17.40s, and the next beat is the aerial orbit. That is a
+pull-back from ground level to the air. It is unavoidable given the order the
+addendum specifies (front view -> aerial -> ground -> facade -> doors), and it
+also means the facade appears twice: once as frame 1, once as the head of the
+walk-in. Both are frontal views of the same wall, so it reads as a return
+rather than a contradiction — but it is a cut outward, and the only one.
+
+If you would rather have zero outward movement, the alternative is to drop the
+separate front-view beat and start the walk-in at 17.40 so frame 1 *is* the
+front view, giving `facade -> doors -> inside` with the aerial living only in
+the intro film. That costs the aerial its place in the journey.
+
+---
+
+## D6. Payload at the new spec needs a decision
+**Raised in c1 after addendum D.**
+
+1920-wide frames at q85 are roughly 311 KB each (measured baseline: 127 KB at
+1600/q72; 1920 is 1.44x the pixels and q85 about 1.7x the bytes).
+
+| fps | frames | desktop payload |
+| --- | --- | --- |
+| 8 | 188 | ~57 MB |
+| 10 | 235 | ~71 MB |
+| 12 | 282 | ~86 MB |
+
+For comparison the current shipped set is 20.9 MB. Real-ESRGAN on the
+interior frames alone is ~1.7 h of compute at 10 fps.
+
+No decision taken — this is a trade for Erick between fidelity and weight.
