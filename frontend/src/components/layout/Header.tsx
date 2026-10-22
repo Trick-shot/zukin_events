@@ -7,7 +7,7 @@ import { BrandMark } from '@/components/layout/BrandMark'
 import { Container } from '@/components/layout/Container'
 import { LanguageToggle } from '@/components/layout/LanguageToggle'
 import { Button } from '@/components/ui/Button'
-import { useScrolledPast } from '@/hooks/useScrolledPast'
+import { useOverDarkSection } from '@/hooks/useOverDarkSection'
 import { cn } from '@/lib/cn'
 
 /** Nav target ids. Sections claim these as they are built in later milestones. */
@@ -30,12 +30,14 @@ export function Header() {
   // fine. Past the hero the page turns cream and white would vanish, so the
   // bar fades to an opaque cream state. The design has no artwork for this —
   // see the assumptions note in the PR.
-  const scrolled = useScrolledPast(120)
+  //
+  // Tracked against the hero element, not a scroll threshold: the hero is
+  // pinned for 450vh, so a fixed "past 120px" would turn the bar cream while
+  // it still sits on a photograph.
+  const overHero = useOverDarkSection('#hero', 80)
 
-  // Only the landing page has a dark hero to sit on. /book and /404 start on
-  // cream, so the transparent white state would be invisible there.
+  // Only the landing page has a dark hero at all.
   const onLanding = pathname === '/'
-  const overHero = onLanding
 
   // In-page anchors only resolve on the landing page. From /book or a 404 the
   // same link has to go home first, so prefix it there.
@@ -62,7 +64,7 @@ export function Header() {
     }
   }, [menuOpen])
 
-  const onDark = overHero && !scrolled
+  const onDark = onLanding && overHero
 
   return (
     <header
