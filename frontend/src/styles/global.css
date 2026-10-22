@@ -1,0 +1,68 @@
+/* Fonts first: self-hosted variable woff2, each subset carrying its own
+   unicode-range so a Latin-only page never downloads Cyrillic or Greek.
+   `font-display: swap` is already baked into the fontsource files. */
+@import '@fontsource-variable/inter/wght.css';
+@import '@fontsource-variable/playfair-display/wght.css';
+
+@import 'tailwindcss';
+@import './tokens.css';
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* The sticky header is 113px tall in Figma; anchor targets must clear it. */
+    scroll-padding-top: 7rem;
+  }
+
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    letter-spacing: -0.015em;
+  }
+
+  /* One visible focus ring everywhere, in a colour that survives both the
+     cream and the plum sections. Never remove it. */
+  :focus-visible {
+    outline: 2px solid var(--color-red);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-pink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@utility eyebrow {
+  /* Gold uppercase label with wide tracking - used by every section header. */
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
