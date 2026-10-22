@@ -1,0 +1,16 @@
+{
+  "frames": 165,
+  "pattern": "f_%04d.webp",
+  "folders": { "desktop": "d", "mobile": "m" },
+  "sizes": { "desktop": "1280px wide", "mobile": "720px wide" },
+  "source": "Frames sampled at 3 fps from the venue clip, in the clip's own order (placeholder: replace with a purpose-shot walkthrough).",
+  "beats": [
+    { "from": 1,   "to": 26,  "caption": "Arrive",            "note": "exterior and gate" },
+    { "from": 27,  "to": 53,  "caption": "The venue",         "note": "aerial, paved yard" },
+    { "from": 54,  "to": 62,  "caption": "Zukin Hall",        "note": "red sign and entrance" },
+    { "from": 63,  "to": 80,  "caption": "Step inside",       "note": "doorway and arch" },
+    { "from": 81,  "to": 107, "caption": "The hall",          "note": "ceiling, tables, table setting" },
+    { "from": 108, "to": 135, "caption": "Made for the day",  "note": "stage, chandelier, aisle" },
+    { "from": 136, "to": 165, "caption": "Book your date",    "note": "aerial; booking bar appears" }
+  ]
+}
