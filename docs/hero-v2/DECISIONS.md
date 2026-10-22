@@ -166,3 +166,71 @@ the hall.
 K.08 "SOUND AND SERVICE" is deferred: the footage shows speakers and a wall
 AC unit only incidentally, and the line claims a service the client has not
 confirmed.
+
+---
+
+## D10. Third-party wedding banner is masked, not cropped
+**Raised by Erick, 2026-10-23.**
+
+A banner by the doors carries another client's **photograph and names**
+("Welcome to Rega…"). That is identifiable personal data about people who did
+not agree to appear on this site, so it is removed rather than left in.
+
+Measured on a 10% grid, it appears in BOTH sources, in the lower-right
+quadrant running to the frame edges:
+
+| Source | Visible | Frames |
+| --- | --- | --- |
+| exterior_C cleaned | 3.00–3.70s | ~18 |
+| original clip | 19.70–20.35s | ~16 |
+
+**Feathered blur, not a solid box.** Left and top edges feather over 110px;
+right and bottom stay hard because they coincide with the frame edge —
+feathering those would let the banner reappear at the border. It reads as
+depth-of-field falloff during a fast dolly rather than as a redaction.
+Verified on the staged output: no faces, no names, no legible text.
+
+---
+
+## D11. The cleaned sign-to-doors clip is good, with one caveat
+**Checked at Erick's request, 2026-10-23.**
+
+Compared cleaned against UNCLEANED (same clip, same timestamps) so only the
+cleaning differs — not against the original, which would also fold in the
+grade.
+
+- The pine branch is cleanly removed, no ghosting or smear.
+- The sky is **not** flatter; the cleaned version holds slightly MORE cloud
+  structure. My first read of a "magenta artefact" was wrong — that red strip
+  was the sign itself bleeding into my crop.
+- Sign lettering passes I.4: same typeface, proportions and spacing, slate
+  matching piece-for-piece. Enhanced, not invented.
+
+**Caveat worth knowing:** Runway also painted construction debris off the
+canopy roof — planks and scattered objects present in the original. Probably
+desirable for marketing, but the cleaned clip is no longer a faithful record
+of the building as it stands.
+
+---
+
+## D12. Front view at Tier 2 — lettering verified
+**Addendum I.4.**
+
+At 1:1 on the shipped pixels, original vs Tier 1 vs Tier 2: the letterforms
+stay faithful through Tier 2 (same slab typeface, proportions, spacing,
+drop-shadow intact; spelling correct). Tier 2 is sharpest — slate gains
+individual stone definition and brick mortar lines resolve where the original
+is mushy. **No rejection; Tier 2 kept for the front view.**
+
+---
+
+## D13. Real-ESRGAN cost, measured not estimated
+
+At 1920 input: **44.9s per frame**, **48 MB per intermediate** (7680x4320).
+~198 interior frames is **~2.5 hours**. Each intermediate is deleted the
+moment it is downscaled, so peak disk stays near one frame.
+
+Shots stage under their own name and a separate numbering pass walks the shot
+table in scroll order. Without that split, filtering by tier processed shots
+out of order and scrambled the frame numbering — and it also makes a 2.5 hour
+run resumable rather than all-or-nothing.
