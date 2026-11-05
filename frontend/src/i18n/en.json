@@ -21,7 +21,8 @@
   "actions": {
     "checkAvailability": "Check availability",
     "bookSiteVisit": "Book a site visit",
-    "trackBooking": "Track my booking"
+    "trackBooking": "Track my booking",
+    "checkDate": "Check your date"
   },
   "brand": {
     "name": "Zukin Hall",
@@ -38,7 +39,9 @@
     "instagram": "Instagram",
     "facebook": "Facebook",
     "copyright": "© Zukin Hall",
-    "builtBy": "Built by Trickshot Software"
+    "builtBy": "Built by Trickshot Software",
+    "visit": "Visit",
+    "terms": "Booking terms"
   },
   "book": {
     "eyebrow": "Booking",
@@ -66,7 +69,7 @@
   },
   "hero": {
     "heading": "Zukin Hall — event venue and decoration in Dodoma",
-    "eyebrow": "Event venue and decoration · Dodoma",
+    "eyebrow": "Event venue and decoration, Dodoma",
     "canvasLabel": "A walkthrough of Zukin Hall: arriving at the gate, the paved yard, the red sign and entrance, the decorated hall, the stage and aisle.",
     "loading": "Loading the venue tour…",
     "unavailable": "The venue tour could not load."

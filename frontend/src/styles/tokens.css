@@ -1,53 +1,90 @@
 /**
- * ZUKIN HALL design tokens.
+ * ZUKIN HALL design tokens — v3 ("white, patterned on real venue sites").
  *
- * Tailwind v4 reads `@theme` and generates utilities from each custom property
- * (`--color-gold` -> `text-gold`, `bg-gold`, `border-gold`, ...). The same
- * properties are also emitted as real CSS variables on `:root`, which is why
- * the radial glows and gradients further down can reference them directly.
- * This is the v4 equivalent of the "tokens in the Tailwind config" rule in the
- * brief: one source of truth, never a hex literal inside a component.
+ * Source of truth: Figma "Zukin tokens" collection + docs/UI_HANDOFF.md.
+ * Tailwind v4 reads `@theme` and generates utilities from each property
+ * (`--color-red` -> `bg-red`, `text-red`, ...). Never a hex literal inside a
+ * component.
+ *
+ * v3 direction: white backgrounds everywhere; photography carries the colour;
+ * ONE accent (the sign red) for actions; wine only for the hero shade, the
+ * decoration/CTA bands and the footer; bronze for tiny data marks only.
+ *
+ * Legacy aliases: the first build used cream/plum/magenta names. They are
+ * kept as aliases onto v3 values so nothing silently renders the old palette
+ * while components migrate; new code should use the v3 names.
  */
 @theme {
-  /* --- Palette (from the brief) --- */
-  --color-red: #d6213b;
-  --color-magenta: #a8185f;
-  --color-pink: #f2a6c8;
-  --color-gold: #c8a24a;
-  --color-plum: #2b0f22;
-  --color-cream: #fbf7f2;
-  --color-ink: #1c1217;
-  --color-muted: #6b5a63;
-  --color-line: #e8ddd5;
+  /* --- Surfaces --- */
+  --color-paper: #ffffff;
+  --color-sand: #f7f6f3;
+  --color-line: #e7e4df;
+  --color-line-soft: #f1efea;
 
-  /* --- Palette (measured off the Figma frame, not in the brief) ---
-     The footer sits on a deeper plum than the hero, and dark sections need
-     three tints of "text on dark" that the brief's `muted` cannot cover
-     (it is tuned for cream backgrounds and fails contrast on plum). */
-  --color-plum-deep: #14070f;
-  --color-on-dark: #e8d8e0;
-  --color-on-dark-muted: #b8a3ae;
-  --color-on-dark-faint: #9c8793;
+  /* --- Text --- */
+  --color-ink: #1b1714;
+  --color-muted: #6b635b;
+  --color-subtle: #9a938b;
+
+  /* --- The one accent --- */
+  --color-red: #c8102e;
+  --color-red-dark: #9e0c24;
+  --color-rose-tint: #f6ecec;
+
+  /* --- Wine (hero shade, two bands, footer — nowhere else) --- */
+  --color-wine-900: #2a0a16;
+  --color-wine-800: #4a0f24;
+  --color-wine-700: #6e1630;
+
+  /* --- Bronze: small data marks only, never backgrounds --- */
+  --color-gold: #9a8c6f;
+  --color-gold-dark: #7e7257;
+
+  /* --- Status (must match the Figma badge component exactly) --- */
+  --color-success: #2e6b4a;
+  --color-success-bg: #e2ede4;
+  --color-warning: #9a6b12;
+  --color-warning-bg: #f5ead2;
+  --color-info: #2c5282;
+  --color-info-bg: #e3eaf3;
+  --color-danger-bg: #f6e1e1;
+  --color-neutral-bg: #ece6dc;
+  --color-fuchsia: #b2185a; /* site-visit status only */
+
+  /* --- Text on wine --- */
+  --color-on-dark: #f0e4e8;
+  --color-on-dark-muted: #c5aeb6;
+  --color-on-dark-faint: #a08b93;
+
+  /* --- Legacy aliases (old names -> v3 values) --- */
+  --color-cream: #ffffff;
+  --color-plum: #4a0f24;
+  --color-plum-deep: #2a0a16;
+  --color-magenta: #b2185a;
+  --color-pink: #f6ecec;
 
   /* --- Type --- */
-  --font-display: 'Playfair Display Variable', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Hanken Grotesk Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
-  /* --- Radii --- */
-  --radius-card: 24px;
-  --radius-card-sm: 20px;
+  /* --- Radii (v3: small and square; pill only for avatars/count dots) --- */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-card: 6px;
+  --radius-card-sm: 4px;
+  --radius-lg: 12px;
   --radius-pill: 999px;
   --radius-mark: 4px;
 
-  /* --- Layout ---
-     1280px of content inside 80px gutters is exactly the 1440 Figma frame. */
-  --container-site: 80rem;
+  /* --- Shadows: almost none; prefer 1px hairlines --- */
+  --shadow-card: 0 1px 2px rgba(31, 20, 12, 0.05);
+  --shadow-pop: 0 12px 32px rgba(31, 20, 12, 0.14);
 
-  /* --- Breakpoints ---
-     The brief names 360 / 768 / 1024 / 1440. 360 is the mobile-first base, so
-     it needs no query; md and lg already match Tailwind's defaults; xl is
-     moved from 1280 to 1440 so `xl:` means "the Figma desktop frame".
-     2xl is removed so nothing silently targets a width we have no design for. */
+  /* --- Layout ---
+     1312px of content inside 64px gutters is exactly the 1440 Figma frame. */
+  --container-site: 86rem;
+
+  /* --- Breakpoints (unchanged) --- */
   --breakpoint-xl: 90rem;
   --breakpoint-2xl: initial;
 }

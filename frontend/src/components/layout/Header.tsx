@@ -1,7 +1,7 @@
 import { Menu, X } from 'lucide-react'
 import { useEffect, useId, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router'
+import { Link, NavLink, useLocation } from 'react-router'
 
 import { BrandMark } from '@/components/layout/BrandMark'
 import { Container } from '@/components/layout/Container'
@@ -10,14 +10,12 @@ import { Button } from '@/components/ui/Button'
 import { useOverDarkSection } from '@/hooks/useOverDarkSection'
 import { cn } from '@/lib/cn'
 
-/** Nav target ids. Sections claim these as they are built in later milestones. */
+/** v3: real routes, not landing anchors — every page owns its URL. */
 const NAV_ITEMS = [
-  { key: 'spaces', href: '#spaces' },
-  { key: 'events', href: '#events' },
-  { key: 'decoration', href: '#decoration' },
-  { key: 'gallery', href: '#gallery' },
-  { key: 'availability', href: '#availability' },
-  { key: 'contact', href: '#location' },
+  { key: 'spaces', to: '/spaces' },
+  { key: 'decoration', to: '/decoration' },
+  { key: 'gallery', to: '/gallery' },
+  { key: 'contact', to: '/contact' },
 ] as const
 
 export function Header() {
@@ -26,25 +24,14 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const menuId = useId()
 
-  // Figma only draws the header over the dark hero, where white text reads
-  // fine. Past the hero the page turns cream and white would vanish, so the
-  // bar fades to an opaque cream state. The design has no artwork for this —
-  // see the assumptions note in the PR.
-  //
-  // Tracked against the hero element, not a scroll threshold: the hero is
-  // pinned for 450vh, so a fixed "past 120px" would turn the bar cream while
-  // it still sits on a photograph.
+  // Over the landing hero the bar sits on photography and stays transparent
+  // with white text; everywhere else (and past the hero) it is the v3 light
+  // bar: white with a hairline. Tracked against the hero element, not a
+  // scroll threshold, because the hero is pinned for several viewports.
   const overHero = useOverDarkSection('#hero', 80)
-
-  // Only the landing page has a dark hero at all.
   const onLanding = pathname === '/'
+  const onDark = onLanding && overHero
 
-  // In-page anchors only resolve on the landing page. From /book or a 404 the
-  // same link has to go home first, so prefix it there.
-  const hrefFor = (hash: string) => (onLanding ? hash : `/${hash}`)
-
-  // Close the mobile menu on Escape and whenever the viewport grows past the
-  // breakpoint where the full nav reappears.
   useEffect(() => {
     if (!menuOpen) return
 
@@ -64,45 +51,57 @@ export function Header() {
     }
   }, [menuOpen])
 
-  const onDark = onLanding && overHero
-
   return (
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-50 transition-colors duration-300',
-        onDark ? 'on-dark text-white' : 'bg-cream/95 text-ink shadow-sm backdrop-blur-md',
+        onDark
+          ? 'on-dark text-white'
+          : 'border-b border-line bg-paper/95 text-ink backdrop-blur-md',
       )}
     >
       <Container>
-        <div className="flex items-center justify-between py-5 xl:py-[30px]">
-          <a href={onLanding ? '#top' : '/'} className="shrink-0" aria-label={t('brand.name')}>
+        <div className="flex items-center justify-between py-4 xl:py-5">
+          <Link to="/" className="shrink-0" aria-label={t('brand.name')}>
             <BrandMark />
-          </a>
+          </Link>
 
-          <nav
-            aria-label={t('a11y.mainNav')}
-            className="hidden items-center gap-9 lg:flex"
-          >
+          <nav aria-label={t('a11y.mainNav')} className="hidden items-center gap-8 lg:flex">
             {NAV_ITEMS.map((item) => (
-              <a
+              <NavLink
                 key={item.key}
-                href={hrefFor(item.href)}
-                className="text-[15px] font-medium transition-opacity hover:opacity-70"
+                to={item.to}
+                className={({ isActive }) =>
+                  cn(
+                    'text-[15px] font-medium transition-opacity hover:opacity-70',
+                    isActive && !onDark && 'text-red',
+                    isActive && onDark && 'underline underline-offset-8',
+                  )
+                }
               >
                 {t(`nav.${item.key}`)}
-              </a>
+              </NavLink>
             ))}
           </nav>
 
-          <div className="flex items-center gap-4 xl:gap-[22px]">
+          <div className="flex items-center gap-4 xl:gap-5">
+            <Link
+              to="/track"
+              className={cn(
+                'hidden text-[15px] font-medium transition-opacity hover:opacity-70 md:block',
+                onDark ? 'text-white' : 'text-muted',
+              )}
+            >
+              {t('actions.trackBooking')}
+            </Link>
             <LanguageToggle className="hidden sm:flex" />
             <Button
-              as="a"
-              href={hrefFor('#availability')}
-              variant={onDark ? 'outline-light' : 'outline'}
+              as="link"
+              to="/book"
+              variant={onDark ? 'outline-light' : 'primary'}
               className="hidden sm:inline-flex"
             >
-              {t('actions.checkAvailability')}
+              {t('actions.checkDate')}
             </Button>
 
             <button
@@ -111,7 +110,7 @@ export function Header() {
               aria-controls={menuId}
               aria-label={t('a11y.mainNav')}
               onClick={() => setMenuOpen((open) => !open)}
-              className="rounded-pill p-2 lg:hidden"
+              className="rounded-xs p-2 lg:hidden"
             >
               {menuOpen ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
             </button>
@@ -119,29 +118,35 @@ export function Header() {
         </div>
       </Container>
 
-      {/* Mobile panel. There is no mobile design yet, so this is a plain
-          stacked list in the plum tone rather than an invented drawer. */}
+      {/* Mobile panel: the v3 light bar continues, white with hairlines. */}
       <div
         id={menuId}
         hidden={!menuOpen}
-        className="on-dark border-t border-white/10 bg-plum text-on-dark lg:hidden"
+        className="border-t border-line bg-paper text-ink lg:hidden"
       >
         <Container>
-          <nav aria-label={t('a11y.mainNav')} className="flex flex-col py-4">
+          <nav aria-label={t('a11y.mainNav')} className="flex flex-col py-3">
             {NAV_ITEMS.map((item) => (
-              <a
+              <NavLink
                 key={item.key}
-                href={hrefFor(item.href)}
+                to={item.to}
                 onClick={() => setMenuOpen(false)}
-                className="py-3 text-base font-medium"
+                className="border-b border-line-soft py-3.5 text-base font-medium last:border-b-0"
               >
                 {t(`nav.${item.key}`)}
-              </a>
+              </NavLink>
             ))}
-            <div className="mt-4 flex items-center justify-between border-t border-white/10 pt-5">
+            <Link
+              to="/track"
+              onClick={() => setMenuOpen(false)}
+              className="py-3.5 text-base font-medium text-muted"
+            >
+              {t('actions.trackBooking')}
+            </Link>
+            <div className="mt-2 flex items-center justify-between border-t border-line pt-4 pb-2">
               <LanguageToggle />
-              <Button as="a" href={hrefFor('#availability')} variant="outline-light" onClick={() => setMenuOpen(false)}>
-                {t('actions.checkAvailability')}
+              <Button as="link" to="/book" onClick={() => setMenuOpen(false)}>
+                {t('actions.checkDate')}
               </Button>
             </div>
           </nav>

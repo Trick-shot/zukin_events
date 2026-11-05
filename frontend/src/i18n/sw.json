@@ -22,7 +22,8 @@
   "actions": {
     "checkAvailability": "Angalia upatikanaji",
     "bookSiteVisit": "Panga ziara ya ukumbi",
-    "trackBooking": "Fuatilia nafasi yangu"
+    "trackBooking": "Fuatilia nafasi yangu",
+    "checkDate": "Angalia tarehe yako"
   },
   "brand": {
     "name": "Zukin Hall",
@@ -39,7 +40,9 @@
     "instagram": "Instagram",
     "facebook": "Facebook",
     "copyright": "© Zukin Hall",
-    "builtBy": "Imetengenezwa na Trickshot Software"
+    "builtBy": "Imetengenezwa na Trickshot Software",
+    "visit": "Tembelea",
+    "terms": "Masharti ya kukodi"
   },
   "book": {
     "eyebrow": "Kuweka nafasi",
@@ -67,7 +70,7 @@
   },
   "hero": {
     "heading": "Zukin Hall — ukumbi wa matukio na mapambo, Dodoma",
-    "eyebrow": "Ukumbi wa matukio na mapambo · Dodoma",
+    "eyebrow": "Ukumbi wa matukio na mapambo, Dodoma",
     "canvasLabel": "Ziara ya Zukin Hall: kuwasili getini, uwanja, alama nyekundu na lango, ukumbi uliopambwa, jukwaa na njia ya bibi harusi.",
     "loading": "Inapakia ziara ya ukumbi…",
     "unavailable": "Ziara ya ukumbi haikuweza kupakia."

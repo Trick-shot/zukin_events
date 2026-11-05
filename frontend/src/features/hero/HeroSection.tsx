@@ -148,7 +148,7 @@ export function HeroSection() {
             <div className="flex flex-col gap-8">
               {/* The venue name stays bottom-left for the whole sequence. */}
               <div>
-                <p className="eyebrow">{t('hero.eyebrow')}</p>
+                <p className="text-sm text-on-dark-muted">{t('hero.eyebrow')}</p>
                 <p className="mt-1.5 font-display text-2xl">{t('brand.name')}</p>
               </div>
 

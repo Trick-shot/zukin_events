@@ -1,8 +1,9 @@
-/* Fonts first: self-hosted variable woff2, each subset carrying its own
-   unicode-range so a Latin-only page never downloads Cyrillic or Greek.
-   `font-display: swap` is already baked into the fontsource files. */
-@import '@fontsource-variable/inter/wght.css';
-@import '@fontsource-variable/playfair-display/wght.css';
+/* Fonts first: self-hosted variable woff2 from fontsource.
+   Fraunces carries the headings (Light, with its optical-size axis the files
+   handle themselves); Hanken Grotesk carries UI and body. */
+@import '@fontsource-variable/fraunces/wght.css';
+@import '@fontsource-variable/fraunces/wght-italic.css';
+@import '@fontsource-variable/hanken-grotesk/wght.css';
 
 @import 'tailwindcss';
 @import './tokens.css';
@@ -10,12 +11,12 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* The sticky header is 113px tall in Figma; anchor targets must clear it. */
-    scroll-padding-top: 7rem;
+    /* Anchor targets must clear the fixed header. */
+    scroll-padding-top: 6rem;
   }
 
   body {
-    background-color: var(--color-cream);
+    background-color: var(--color-paper);
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -25,12 +26,12 @@
   h2,
   h3 {
     font-family: var(--font-display);
-    font-weight: 400;
-    letter-spacing: -0.015em;
+    font-weight: 330;
+    letter-spacing: -0.01em;
   }
 
   /* One visible focus ring everywhere, in a colour that survives both the
-     cream and the plum sections. Never remove it. */
+     white and the wine sections. Never remove it. */
   :focus-visible {
     outline: 2px solid var(--color-red);
     outline-offset: 3px;
@@ -39,7 +40,7 @@
 
   .on-dark :focus-visible,
   .on-dark:focus-visible {
-    outline-color: var(--color-pink);
+    outline-color: var(--color-on-dark);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -59,10 +60,27 @@
 }
 
 @utility eyebrow {
-  /* Gold uppercase label with wide tracking - used by every section header. */
-  font-size: 0.75rem;
+  /* Small tracked label in bronze. v3 rule: used ONLY where it encodes data —
+     capacity rows, price labels, table headers, date headers — never as a
+     decorative kicker above a heading. */
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-dark);
+}
+
+@utility hairline {
+  border-top: 1px solid var(--color-line);
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
