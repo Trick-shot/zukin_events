@@ -15,6 +15,10 @@ import type { HeroManifest } from '@/features/hero/manifest'
 export const EAGER_FRAME_COUNT: Record<SequenceVariant, number> = {
   desktop: 12,
   mobile: 15,
+  // The xl frames are the heaviest in the set, so fewer of them buy the
+  // same time-to-scrubbable. Measured on the committed sets: mobile
+  // 66KB/frame, desktop 185KB, xl 239KB.
+  xl: 8,
 }
 
 const BACKGROUND_CONCURRENCY = 6

@@ -20,10 +20,14 @@ dist-ssr/
 # Camera originals: large, not web assets, and regenerable outputs live in
 # frontend/public/hero/. Only scripts/build_hero_assets.sh and its outputs
 # are committed.
-/assets-src/
+/assets-src/*
+# ...except the review crops: small, and the whole point of them is to be
+# looked at in a PR.
+!/assets-src/review/
 
-# Scratch dir for the hero asset pipeline; regenerable, safe to delete.
+# Scratch dirs for the hero asset pipelines; regenerable, safe to delete.
 /.hero-build/
+/.hero-xl-build/
 
 # --- Env ---
 .env

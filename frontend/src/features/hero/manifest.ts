@@ -22,7 +22,12 @@ export type HeroManifest = {
   frames: number
   /** printf-style, e.g. "f_%04d.webp". */
   pattern: string
-  folders: { desktop: string; mobile: string }
+  /**
+   * `xl` is optional: a manifest without it is still valid and the variant
+   * picker falls back to `desktop`, so the retina set can be dropped or
+   * restored without a code change.
+   */
+  folders: { desktop: string; mobile: string; xl?: string }
   /**
    * The frames the scrub actually plays, 1-based inclusive. Defaults to the
    * whole sequence. It exists because a clip can carry handles the hero should
@@ -40,7 +45,7 @@ export type HeroManifest = {
    * it the hero is pure scrub, as before.
    */
   intro?: FrameRange
-  sizes?: { desktop?: string; mobile?: string }
+  sizes?: { desktop?: string; mobile?: string; xl?: string }
   source?: string
   beats: HeroBeat[]
 }
@@ -77,6 +82,10 @@ export function parseManifest(value: unknown): HeroManifest {
     typeof folders.mobile !== 'string'
   ) {
     throw new Error('Hero manifest: "folders" must name a desktop and a mobile folder')
+  }
+  // Absent is a valid choice; present-but-wrong is a mistake worth failing on.
+  if (folders.xl !== undefined && typeof folders.xl !== 'string') {
+    throw new Error('Hero manifest: "folders.xl", when present, must be a string')
   }
 
   const beats = Array.isArray(raw.beats)
@@ -120,7 +129,11 @@ export function parseManifest(value: unknown): HeroManifest {
     scrub,
     intro,
     pattern: raw.pattern,
-    folders: { desktop: folders.desktop, mobile: folders.mobile },
+    folders: {
+      desktop: folders.desktop,
+      mobile: folders.mobile,
+      ...(typeof folders.xl === 'string' ? { xl: folders.xl } : {}),
+    },
     sizes: raw.sizes as HeroManifest['sizes'],
     source: typeof raw.source === 'string' ? raw.source : undefined,
     beats,
