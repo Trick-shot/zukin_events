@@ -1,7 +1,16 @@
-# API contract — booking tracking
+# API contract — booking endpoints
 
 Status: **contract only, not implemented.** The backend arrives in milestone
 (b); this document is what it has to satisfy.
+
+Four endpoints, all driven today by mock modules the frontend already calls:
+
+| Endpoint | Mock | Screens |
+| --- | --- | --- |
+| `GET /api/bookings/track` | `trackBooking` | B6, B7 (`/track`) |
+| `GET /api/bookings/availability` | `checkDate` | B1, B5 (`/book`) |
+| `POST /api/bookings/requests` | `submitRequest` | B3, B4 (`/book`) |
+| `POST /api/bookings/site-visits` | `submitSiteVisit` | B8 (`/site-visit`) |
 
 The authority for this contract is `frontend/src/lib/mockBookings.ts`. The
 frontend is already built against it: `trackBooking(phone, reference)` returns
@@ -379,3 +388,191 @@ above dev.
 - [ ] `Cache-Control: no-store` on every response
 - [ ] `trackBooking` in the frontend swapped to `fetch`, fixtures deleted,
       `/track` still passes all four fixture journeys by hand
+
+
+---
+
+# Availability
+
+```
+GET /api/bookings/availability?date=<YYYY-MM-DD>&space=<slug>
+```
+
+Public, unauthenticated, read-only. Backs step 1 of `/book`: the visitor picks
+a date and the screen either moves on or offers alternatives (B5).
+
+Mock: `checkDate` in `frontend/src/lib/mockAvailability.ts`.
+
+### Responses
+
+| Case | Status | Body |
+| --- | --- | --- |
+| Date is free | `200` | `{"available": true}` |
+| Date is taken | `200` | `{"available": false, "closestFreeDates": ["YYYY-MM-DD", …]}` |
+| Bad date or unknown space | `400` | `{"detail": "..."}` |
+| Throttled | `429` | `{"detail": "..."}` |
+
+`closestFreeDates` holds **at most three** dates, soonest first, strictly after
+the requested one, never in the past, and free **in the space that was asked
+about**. The UI renders them as tappable chips and continues straight to step
+2 when one is chosen, so a date offered here must be bookable — do not return
+a date that the create endpoint would then reject.
+
+A taken date is a `200`, not a `404`: "booked" is a successful answer to the
+question, and the UI shows it as information, not an error.
+
+### What it must NOT return
+
+Only the venue's own calendar, never anyone's booking. No client name, no
+reference, no event type, no "held by" — a visitor may not learn who booked a
+date or even that a specific person did. `{"available": false}` is the whole
+truth the public is entitled to.
+
+### Rate limiting
+
+Lighter than tracking, because nothing personal is exposed, but still
+throttled per IP: walking a year of dates across both spaces maps the venue's
+entire booking calendar, which is commercially sensitive even if it is not
+personal data. A per-IP budget in the low hundreds per hour is ample for an
+honest visitor comparing a few dates.
+
+### Which dates are taken (mock only)
+
+The mock has no database, so it fakes a booked calendar with a documented
+rule: **main hall** is taken on the 8th, 14th and 22nd of every month;
+**second space** on the 14th and 27th. The 14th is deliberately taken in both,
+which is the case where "try the other room" does not help either. Delete the
+rule with the mock — the real endpoint consults actual bookings.
+
+---
+
+# Create a booking request
+
+```
+POST /api/bookings/requests
+Content-Type: application/json
+```
+
+Public and unauthenticated — the whole point of the flow is that no account is
+needed. Backs B3 → B4.
+
+Mock: `submitRequest` in `frontend/src/lib/mockBookings.ts`.
+
+### Request body
+
+```json
+{
+  "eventDate": "2027-03-21",
+  "space": "main-hall",
+  "eventType": "send-off",
+  "guests": 150,
+  "clientName": "Neema Kato",
+  "phone": "0754 111 222",
+  "decorPackage": "Premium"
+}
+```
+
+`decorPackage` is `null` when the visitor chose "Decide later". `eventType`
+is the slug the hero widget and `/book` both use (`wedding`, `send-off`,
+`kitchen-party`, `birthday`, `corporate`). `phone` arrives as typed; the
+server normalises it the same way tracking does.
+
+### Responses
+
+| Case | Status | Body |
+| --- | --- | --- |
+| Created | `201` | `{"reference": "ZK-2703-9653"}` |
+| Validation failed | `400` | `{"detail": "...", "errors": {"<field>": "..."}}` |
+| Date taken since step 1 | `409` | `{"detail": "...", "closestFreeDates": [...]}` |
+| Throttled | `429` | `{"detail": "..."}` |
+
+The booking is created with status `requested`, which is where `/track` picks
+it up. Nothing is held and nothing is paid — the UI says so on both B3 and B4,
+and the server must not imply otherwise by, say, writing `deposit_due`.
+
+**The `409` matters.** Availability was checked at step 1; the visitor then
+spent a minute typing their details. Re-check on create, and if the date went
+in the meantime, say so with the same `closestFreeDates` shape as the
+availability endpoint so the UI can offer chips rather than dead-end.
+
+### THE REFERENCE MUST BE UNGUESSABLE
+
+The mock derives the reference deterministically from the payload, purely so
+tests can assert an exact value. **That must not ship.**
+
+The reference is one half of the tracking credential. Tracking already treats
+the 4-digit tail as low-entropy and leans on the phone number as the real
+secret — but that only holds if the reference cannot be *derived*. A reference
+computed from (phone, date, space) would let anyone who knows a person's phone
+number and guesses their wedding date reconstruct it exactly, and read their
+booking. Use a database sequence or random suffix, and keep the
+`ZK-YYMM-NNNN` shape only as display formatting.
+
+### Rate limiting and abuse
+
+This endpoint writes to the database on an unauthenticated POST, so it is the
+spam surface:
+
+- throttle per IP and per normalised phone (a few per hour is generous — nobody
+  books five weddings an hour)
+- reject obviously bad input server-side: dates in the past, guests below 1 or
+  above the venue's real capacity, names and phones over sane lengths
+- consider a soft duplicate check (same phone + same date within minutes) and
+  return the existing reference rather than creating twins reception has to
+  reconcile by hand
+- the deterministic `guests: 13` failure in the mock is a **mock-only** test
+  hook; the real endpoint must not have it
+
+---
+
+# Request a site visit
+
+```
+POST /api/bookings/site-visits
+Content-Type: application/json
+```
+
+Public and unauthenticated. Backs B8. A site visit is a **separate request
+type** in the lifecycle, not a booking.
+
+Mock: `submitSiteVisit` in `frontend/src/lib/mockBookings.ts`.
+
+### Request body
+
+```json
+{ "day": "2026-11-10", "slot": "12:00", "phone": "0712 345 678" }
+```
+
+### Responses
+
+| Case | Status | Body |
+| --- | --- | --- |
+| Created | `201` | `{"reference": "ZV-2611-9887"}` |
+| Validation failed | `400` | `{"detail": "...", "errors": {...}}` |
+| Throttled | `429` | `{"detail": "..."}` |
+
+References use the `ZV-` prefix so reception can tell a visit from a booking at
+a glance on a printed list. The same unguessability rule applies.
+
+The response does **not** confirm the slot, and the UI is careful to say so:
+"the slot is not held until reception confirms it". Do not change that to an
+immediate confirmation without changing the copy — promising a slot the venue
+has not agreed to is worse than asking the visitor to wait for an SMS.
+
+Open questions for the owner, both marked `[bracketed]` on screen: the real
+slot times (10:00 / 12:00 / 15:00 are placeholders) and whether Sundays are
+genuinely closed (currently shown disabled).
+
+---
+
+# Definition of done — the three new endpoints
+
+- [ ] Availability returns at most three free, future, same-space dates
+- [ ] A taken date is `200 {"available": false}`, never `404`, and leaks no booking
+- [ ] Create re-checks availability and returns `409` with chips if it slipped
+- [ ] **References are unguessable** — sequence or random, never derived from the payload
+- [ ] Create throttled per IP and per phone; past dates and absurd guest counts rejected
+- [ ] Site visits use `ZV-`, and the response never claims the slot is held
+- [ ] The `guests: 13` and phone-ending-13 mock failure hooks do not exist server-side
+- [ ] `checkDate`, `submitRequest` and `submitSiteVisit` swapped to `fetch`, mocks deleted,
+      and `/book` + `/site-visit` still walk end to end by hand

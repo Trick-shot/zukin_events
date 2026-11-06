@@ -29,6 +29,9 @@ const ContactPage = lazy(() =>
 )
 const TermsPage = lazy(() => import('@/pages/TermsPage').then((m) => ({ default: m.TermsPage })))
 const BookPage = lazy(() => import('@/pages/BookPage').then((m) => ({ default: m.BookPage })))
+const SiteVisitPage = lazy(() =>
+  import('@/pages/SiteVisitPage').then((m) => ({ default: m.SiteVisitPage })),
+)
 const TrackPage = lazy(() => import('@/pages/TrackPage').then((m) => ({ default: m.TrackPage })))
 const NotFoundPage = lazy(() =>
   import('@/pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })),
@@ -69,7 +72,7 @@ export default function App() {
                   <Route path="/track" element={<TrackPage />} />
                 {/* The site-visit flow is the next milestone; until then it
                     lands on the booking stub so no CTA points at a 404. */}
-                <Route path="/site-visit" element={<BookPage />} />
+                <Route path="/site-visit" element={<SiteVisitPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>

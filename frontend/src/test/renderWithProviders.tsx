@@ -9,16 +9,23 @@ import i18n from '@/i18n'
  * Components under test need i18n (every string goes through `t`) and a router
  * (the booking bar navigates). Wrapping once here keeps that out of each test.
  */
-export function renderWithProviders(ui: ReactElement, options?: RenderOptions) {
+export type ProviderRenderOptions = RenderOptions & {
+  /** Router entries, for components that read the query string or params. */
+  initialEntries?: string[]
+}
+
+export function renderWithProviders(ui: ReactElement, options?: ProviderRenderOptions) {
+  const { initialEntries, ...renderOptions } = options ?? {}
+
   function Wrapper({ children }: { children: ReactNode }) {
     return (
       <I18nextProvider i18n={i18n}>
-        <MemoryRouter>{children}</MemoryRouter>
+        <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
       </I18nextProvider>
     )
   }
 
-  return render(ui, { wrapper: Wrapper, ...options })
+  return render(ui, { wrapper: Wrapper, ...renderOptions })
 }
 
 /** Force prefers-reduced-motion on or off for a test. */

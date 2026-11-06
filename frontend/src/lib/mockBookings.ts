@@ -114,3 +114,98 @@ export async function trackBooking(
   )
   return hit ? hit.booking : null
 }
+
+/* ------------------------------------------------------------------ */
+/* Booking request submission (B2 -> B4)                              */
+/* ------------------------------------------------------------------ */
+
+/**
+ * What the visitor sends. Mirrors the form across steps 1-3; the server
+ * assigns the reference and the initial `requested` status, so neither
+ * appears here.
+ */
+export type BookingRequest = {
+  /** ISO `YYYY-MM-DD`. */
+  eventDate: string
+  /** Space slug, e.g. `main-hall`. */
+  space: string
+  eventType: string
+  guests: number
+  clientName: string
+  phone: string
+  /** Package name, or null for "decide later". */
+  decorPackage: string | null
+}
+
+export type BookingRequestResult = { reference: string }
+
+/**
+ * Submitting with exactly 13 guests always fails.
+ *
+ * A deterministic trigger is the only way to reach the submit-failure state
+ * by hand, and 13 is memorable, impossible to hit by accident at a venue this
+ * size, and obviously synthetic to anyone reading the fixtures.
+ */
+export const FAILURE_GUEST_COUNT = 13
+
+export class BookingSubmitError extends Error {
+  constructor() {
+    super('The request could not be sent.')
+    this.name = 'BookingSubmitError'
+  }
+}
+
+/**
+ * Reference in the same shape as the fixtures: `ZK-YYMM-NNNN`, where YYMM is
+ * the EVENT's year and month (not today's) so references sort by the date
+ * they belong to, matching ZK-2603-0142 for a March 2027 wedding.
+ *
+ * The last four digits are derived from the payload rather than random, so a
+ * test can assert an exact reference. The real backend will use a sequence.
+ */
+function referenceFor(request: BookingRequest): string {
+  const [year, month] = request.eventDate.split('-')
+  const seedSource = `${request.phone}|${request.eventDate}|${request.space}`
+  let hash = 0
+  for (const char of seedSource) hash = (hash * 31 + char.charCodeAt(0)) >>> 0
+  const serial = String((hash % 9000) + 1000)
+  return `ZK-${year.slice(2)}${month}-${serial}`
+}
+
+const SUBMIT_LATENCY_MS = 900
+
+export async function submitRequest(request: BookingRequest): Promise<BookingRequestResult> {
+  await new Promise((resolve) => setTimeout(resolve, SUBMIT_LATENCY_MS))
+  if (request.guests === FAILURE_GUEST_COUNT) throw new BookingSubmitError()
+  return { reference: referenceFor(request) }
+}
+
+/* ------------------------------------------------------------------ */
+/* Site visit request (B8)                                            */
+/* ------------------------------------------------------------------ */
+
+export type SiteVisitRequest = {
+  /** ISO `YYYY-MM-DD`. */
+  day: string
+  /** One of the slots offered, e.g. `10:00`. */
+  slot: string
+  phone: string
+}
+
+export type SiteVisitResult = { reference: string }
+
+/**
+ * Site visits get their own reference prefix (`ZV-`) because they are a
+ * separate request type in the lifecycle, and reception should be able to
+ * tell the two apart by eye on a printed list.
+ */
+export async function submitSiteVisit(request: SiteVisitRequest): Promise<SiteVisitResult> {
+  await new Promise((resolve) => setTimeout(resolve, SUBMIT_LATENCY_MS))
+  if (normalisePhone(request.phone).endsWith('13')) throw new BookingSubmitError()
+  const [year, month] = request.day.split('-')
+  let hash = 0
+  for (const char of `${request.phone}|${request.day}|${request.slot}`) {
+    hash = (hash * 31 + char.charCodeAt(0)) >>> 0
+  }
+  return { reference: `ZV-${year.slice(2)}${month}-${String((hash % 9000) + 1000)}` }
+}
