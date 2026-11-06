@@ -23,7 +23,10 @@
     "checkAvailability": "Angalia upatikanaji",
     "bookSiteVisit": "Panga ziara ya ukumbi",
     "trackBooking": "Fuatilia nafasi yangu",
-    "checkDate": "Angalia tarehe yako"
+    "checkDate": "Angalia tarehe yako",
+    "bookVenue": "Hifadhi ukumbi",
+    "findBooking": "Tafuta oda yangu",
+    "bookVisit": "Weka ziara"
   },
   "brand": {
     "name": "Zukin Hall",
@@ -83,7 +86,12 @@
     "guests": "Wageni",
     "selectSpace": "Chagua ukumbi",
     "selectEventType": "Harusi, send-off…",
-    "numberOfGuests": "Idadi ya wageni"
+    "numberOfGuests": "Idadi ya wageni",
+    "phone": "Namba ya simu",
+    "reference": "Namba ya oda",
+    "preferredDate": "Siku unayopendelea",
+    "refPlaceholder": "ZK-2603-0142",
+    "phonePlaceholder": "0712 345 678"
   },
   "spaces": {
     "mainHall": "Ukumbi mkuu",

@@ -1,6 +1,7 @@
 import { Phone } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
+import { useSearchParams } from 'react-router'
 
 import { Container } from '@/components/layout/Container'
 import { Button } from '@/components/ui/Button'
@@ -48,12 +49,29 @@ function formatDate(iso: string): string {
 }
 
 export function TrackPage() {
-  const [phone, setPhone] = useState('')
-  const [reference, setReference] = useState('')
+  // Arriving from the hero widget carries ?phone=&ref= — prefill and look up
+  // immediately, so the widget's "Find my booking" does what it says.
+  const [searchParams] = useSearchParams()
+  const [phone, setPhone] = useState(() => searchParams.get('phone') ?? '')
+  const [reference, setReference] = useState(() => searchParams.get('ref') ?? '')
   const [fieldErrors, setFieldErrors] = useState<{ phone?: string; reference?: string }>({})
   const [loading, setLoading] = useState(false)
   const [failed, setFailed] = useState(false)
   const [result, setResult] = useState<Booking | null | 'none'>(null)
+
+  const autoRan = useRef(false)
+  useEffect(() => {
+    if (autoRan.current) return
+    autoRan.current = true
+    const qPhone = searchParams.get('phone')
+    const qRef = searchParams.get('ref')
+    if (!qPhone || !qRef) return
+    setLoading(true)
+    trackBooking(qPhone, qRef)
+      .then((booking) => setResult(booking ?? 'none'))
+      .catch(() => setFailed(true))
+      .finally(() => setLoading(false))
+  }, [searchParams])
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault()

@@ -84,16 +84,11 @@ export function Header() {
             ))}
           </nav>
 
+          {/* One action in the bar, the clearest one for a first-time
+              visitor: Book venue. Tracking lives in the footer, the booking
+              widget's own tab and the mobile menu — returning clients find
+              it, new clients are never distracted from booking. */}
           <div className="flex items-center gap-4 xl:gap-5">
-            <Link
-              to="/track"
-              className={cn(
-                'hidden text-[15px] font-medium transition-opacity hover:opacity-70 md:block',
-                onDark ? 'text-white' : 'text-muted',
-              )}
-            >
-              {t('actions.trackBooking')}
-            </Link>
             <LanguageToggle className="hidden sm:flex" />
             <Button
               as="link"
@@ -101,7 +96,7 @@ export function Header() {
               variant={onDark ? 'outline-light' : 'primary'}
               className="hidden sm:inline-flex"
             >
-              {t('actions.checkDate')}
+              {t('actions.bookVenue')}
             </Button>
 
             <button
@@ -146,7 +141,7 @@ export function Header() {
             <div className="mt-2 flex items-center justify-between border-t border-line pt-4 pb-2">
               <LanguageToggle />
               <Button as="link" to="/book" onClick={() => setMenuOpen(false)}>
-                {t('actions.checkDate')}
+                {t('actions.bookVenue')}
               </Button>
             </div>
           </nav>

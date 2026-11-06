@@ -3,8 +3,31 @@ import { Mail } from 'lucide-react'
 
 import { Container } from '@/components/layout/Container'
 import { Button } from '@/components/ui/Button'
+import { KangaBorder } from '@/components/ui/KangaBorder'
 import { PageHeading } from '@/components/ui/PageHeading'
 import { CONTACT } from '@/content/site'
+
+/** The entrance arch with its flowers, in the step-icon stroke language. */
+function ArchIllustration({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 120 96"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      className={className}
+    >
+      <path d="M22 92V52a38 38 0 0 1 76 0v40" />
+      <path d="M32 92V54a28 28 0 0 1 56 0v38" />
+      <path d="M10 92h100" />
+      <circle cx="22" cy="40" r="4" /><circle cx="30" cy="30" r="4" /><circle cx="41" cy="22" r="4" />
+      <circle cx="98" cy="40" r="4" /><circle cx="90" cy="30" r="4" /><circle cx="79" cy="22" r="4" />
+      <path d="M54 16a6 6 0 0 1 12 0 6 6 0 0 1-12 0Z" />
+    </svg>
+  )
+}
 
 /**
  * /contact — the ways to reach reception, after Figma 94:980 / 94:1175.
@@ -60,7 +83,8 @@ export function ContactPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="visit-heading" className="texture-kanga bg-sand py-20">
+      <section aria-labelledby="visit-heading" className="texture-kanga bg-sand pb-20">
+        <KangaBorder className="mb-16" />
         <Container className="flex flex-col gap-12 lg:flex-row lg:gap-20">
           <div className="flex-[3]">
             <div className="min-h-72 overflow-hidden rounded-card bg-paper">
@@ -83,7 +107,8 @@ export function ContactPage() {
             </a>
           </div>
           <div className="flex-[2]">
-            <h2 id="visit-heading" className="text-3xl">
+            <ArchIllustration className="w-24 text-gold-dark" />
+            <h2 id="visit-heading" className="mt-5 text-3xl">
               Come and see it.
             </h2>
             <p className="mt-3 max-w-md text-[15px] text-muted">

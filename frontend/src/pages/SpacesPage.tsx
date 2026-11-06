@@ -1,6 +1,7 @@
 import { Container } from '@/components/layout/Container'
 import { Button } from '@/components/ui/Button'
 import { CapacityRow } from '@/components/ui/CapacityRow'
+import { KangaBorder } from '@/components/ui/KangaBorder'
 import { PageHeading } from '@/components/ui/PageHeading'
 import { Photo } from '@/components/ui/Photo'
 import { SPACES } from '@/content/site'
@@ -19,8 +20,9 @@ export function SpacesPage() {
         <section
           key={space.slug}
           aria-labelledby={`${space.slug}-heading`}
-          className={index % 2 ? 'texture-kanga bg-sand py-20' : 'bg-paper pb-20'}
+          className={index % 2 ? 'texture-kanga bg-sand pb-20' : 'bg-paper pb-20'}
         >
+          {index % 2 ? <KangaBorder className="mb-16" /> : null}
           <Container>
             <div className="flex flex-wrap items-end justify-between gap-6">
               <div>

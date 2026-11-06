@@ -22,7 +22,10 @@
     "checkAvailability": "Check availability",
     "bookSiteVisit": "Book a site visit",
     "trackBooking": "Track my booking",
-    "checkDate": "Check your date"
+    "checkDate": "Check your date",
+    "bookVenue": "Book venue",
+    "findBooking": "Find my booking",
+    "bookVisit": "Book a visit"
   },
   "brand": {
     "name": "Zukin Hall",
@@ -82,7 +85,12 @@
     "guests": "Guests",
     "selectSpace": "Select space",
     "selectEventType": "Wedding, send-off…",
-    "numberOfGuests": "Number of guests"
+    "numberOfGuests": "Number of guests",
+    "phone": "Phone number",
+    "reference": "Booking reference",
+    "preferredDate": "Preferred day",
+    "refPlaceholder": "ZK-2603-0142",
+    "phonePlaceholder": "0712 345 678"
   },
   "spaces": {
     "mainHall": "Main hall",
