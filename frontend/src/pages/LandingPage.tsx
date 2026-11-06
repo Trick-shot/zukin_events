@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { CapacityRow } from '@/components/ui/CapacityRow'
 import { KangaBand } from '@/components/ui/KangaBand'
 import { Photo } from '@/components/ui/Photo'
+import { RingsMotif } from '@/components/ui/RingsMotif'
 import { BOOKING_STEPS, CONTACT, EVENT_TYPES, GALLERY_PREVIEW, SPACES } from '@/content/site'
 import { HeroSection } from '@/features/hero/HeroSection'
 
@@ -75,7 +76,7 @@ export function LandingPage() {
       </section>
 
       {/* ---- The spaces, on sand. ---- */}
-      <section id="spaces" aria-labelledby="spaces-heading" className="bg-sand py-24">
+      <section id="spaces" aria-labelledby="spaces-heading" className="texture-kanga bg-sand py-24">
         <Container>
           <div className="flex flex-wrap items-end justify-between gap-6">
             <h2 id="spaces-heading" className="text-3xl sm:text-4xl">
@@ -166,9 +167,10 @@ export function LandingPage() {
       <section
         id="decoration"
         aria-labelledby="decoration-heading"
-        className="on-dark bg-wine-900 py-24 text-on-dark"
+        className="on-dark relative overflow-hidden bg-wine-900 py-24 text-on-dark"
       >
-        <Container className="flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-20">
+        <RingsMotif className="top-[-60px] right-[-120px] w-[560px]" />
+        <Container className="relative flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-20">
           <div className="lg:w-[520px]">
             <Photo
               src="venue/hall_ceiling.jpg"
@@ -212,8 +214,14 @@ export function LandingPage() {
       </section>
 
       {/* ---- One quote. Real one pending — visibly a placeholder. ---- */}
-      <section aria-label="What a past client said" className="bg-paper py-28">
-        <Container>
+      <section aria-label="What a past client said" className="relative overflow-hidden bg-paper py-28">
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-10 left-2 font-display text-[22rem] leading-none text-sand select-none sm:left-8"
+        >
+          “
+        </span>
+        <Container className="relative">
           <blockquote className="max-w-3xl">
             <p className="font-display text-2xl leading-relaxed text-ink sm:text-3xl">
               “[A short quote from a real past client, used with their permission. It names the
@@ -227,7 +235,7 @@ export function LandingPage() {
       </section>
 
       {/* ---- How booking works: a true sequence, so numbers are earned. ---- */}
-      <section id="availability" aria-labelledby="booking-heading" className="bg-sand py-22">
+      <section id="availability" aria-labelledby="booking-heading" className="texture-kanga bg-sand py-22">
         <Container>
           <h2 id="booking-heading" className="max-w-xl text-3xl sm:text-4xl">
             Booking is four steps. No account needed.
@@ -295,8 +303,12 @@ export function LandingPage() {
       </section>
 
       {/* ---- Closing CTA: the second wine band. ---- */}
-      <section aria-labelledby="cta-heading" className="on-dark bg-wine-900 py-24 text-on-dark">
-        <Container className="flex flex-col items-start gap-8">
+      <section
+        aria-labelledby="cta-heading"
+        className="on-dark relative overflow-hidden bg-wine-900 py-24 text-on-dark"
+      >
+        <RingsMotif className="bottom-[-120px] right-[-80px] w-[480px]" />
+        <Container className="relative flex flex-col items-start gap-8">
           <h2 id="cta-heading" className="max-w-2xl text-3xl text-white sm:text-4xl">
             Come and see the hall.
           </h2>

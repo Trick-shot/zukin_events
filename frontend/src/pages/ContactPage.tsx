@@ -60,7 +60,7 @@ export function ContactPage() {
         </Container>
       </section>
 
-      <section aria-labelledby="visit-heading" className="bg-sand py-20">
+      <section aria-labelledby="visit-heading" className="texture-kanga bg-sand py-20">
         <Container className="flex flex-col gap-12 lg:flex-row lg:gap-20">
           <div className="min-h-72 flex-[3] overflow-hidden rounded-card">
             <a

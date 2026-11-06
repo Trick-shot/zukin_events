@@ -28,7 +28,8 @@ const SIZES: Record<ButtonSize, string> = {
 
 const BASE =
   'inline-flex items-center justify-center gap-2.5 rounded-xs font-semibold leading-none tracking-[0.02em] ' +
-  'transition-colors duration-150 whitespace-nowrap disabled:opacity-50 disabled:pointer-events-none'
+  'transition-[color,background-color,border-color,transform] duration-150 whitespace-nowrap ' +
+  'motion-safe:active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none'
 
 type BaseProps = {
   variant?: ButtonVariant

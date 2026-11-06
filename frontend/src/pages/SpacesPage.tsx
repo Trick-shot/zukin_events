@@ -19,7 +19,7 @@ export function SpacesPage() {
         <section
           key={space.slug}
           aria-labelledby={`${space.slug}-heading`}
-          className={index % 2 ? 'bg-sand py-20' : 'bg-paper pb-20'}
+          className={index % 2 ? 'texture-kanga bg-sand py-20' : 'bg-paper pb-20'}
         >
           <Container>
             <div className="flex flex-wrap items-end justify-between gap-6">

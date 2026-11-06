@@ -80,7 +80,7 @@ export function DecorationPage() {
       </section>
 
       {/* How styling works: a true sequence. */}
-      <section aria-labelledby="styling-heading" className="bg-sand py-20">
+      <section aria-labelledby="styling-heading" className="texture-kanga bg-sand py-20">
         <Container>
           <h2 id="styling-heading" className="max-w-xl text-3xl">
             From booking to the big day.

@@ -122,9 +122,10 @@ export function GalleryPage() {
           onClick={close}
         >
           <img
+            key={open.src}
             src={`/images/${open.src}`}
             alt={open.alt}
-            className="max-h-[86vh] max-w-full rounded-card object-contain"
+            className="max-h-[86vh] max-w-full rounded-card object-contain motion-safe:animate-[photo-fade_200ms_ease-out]"
             onClick={(event) => event.stopPropagation()}
           />
           <p className="absolute bottom-5 left-1/2 w-full max-w-xl -translate-x-1/2 px-6 text-center text-sm text-on-dark-muted">
