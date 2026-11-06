@@ -130,7 +130,7 @@ export function LandingPage() {
                 <Link
                   to={`/spaces/${space.slug}`}
                   className="block flex-[3] overflow-hidden rounded-card"
-                  aria-label={`${space.name} — see details`}
+                  aria-label={`${space.name}: see details`}
                 >
                   <Photo
                     src={space.photos.main}
@@ -357,7 +357,7 @@ export function LandingPage() {
             Come and see the hall.
           </h2>
           <p className="max-w-xl text-on-dark-muted">
-            Free site visits Monday to Saturday — or check a date now, it takes a minute.
+            Free site visits Monday to Saturday. Or check a date now, it takes a minute.
           </p>
           <div className="flex flex-wrap gap-4">
             <Button as="link" to="/site-visit">

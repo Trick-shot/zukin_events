@@ -57,7 +57,7 @@ const CHANNELS = [
     icon: Clock,
     name: 'Open',
     value: CONTACT.hours,
-    note: 'Site visits are free — book a slot',
+    note: 'Site visits are free. Book a slot',
   },
 ] as const
 
@@ -67,7 +67,7 @@ export function ContactPage() {
       <PageHeading
         crumb="Contact"
         title="Talk to reception."
-        intro="Questions about a date, a quote or a visit — one team answers all of it."
+        intro="Questions about a date, a quote or a visit: one team answers all of it."
       />
 
       <section aria-label="Ways to reach us" className="bg-paper pb-20">
@@ -112,7 +112,7 @@ export function ContactPage() {
               Come and see it.
             </h2>
             <p className="mt-3 max-w-md text-[15px] text-muted">
-              {CONTACT.address}. A visit takes about 30 minutes — a member of the team walks you
+              {CONTACT.address}. A visit takes about 30 minutes. A member of the team walks you
               through both rooms and answers your questions.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">

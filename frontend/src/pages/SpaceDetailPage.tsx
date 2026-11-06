@@ -72,9 +72,9 @@ export function SpaceDetailPage() {
               <li className="hairline" aria-hidden="true" />
             </ul>
             <p className="mt-6 max-w-lg text-sm text-subtle">
-              Decoration is chosen separately —{' '}
+              Decoration is chosen separately.{' '}
               <Link to="/decoration" className="font-medium text-ink underline-offset-4 hover:underline">
-                see the three packages
+                See the three packages
               </Link>
               . A deposit holds your date for 7 days while you decide.
             </p>
@@ -84,7 +84,7 @@ export function SpaceDetailPage() {
             <div className="rounded-card border border-line bg-paper p-6 shadow-card">
               <h2 className="font-sans text-base font-semibold">Hold this room</h2>
               <p className="mt-2 text-sm text-muted">
-                Check a date now — if it is free, your request goes straight to reception.
+                Check a date now. If it is free, your request goes straight to reception.
               </p>
               <Button as="link" to={`/book?space=${space.slug}`} className="mt-5 w-full">
                 Check your date

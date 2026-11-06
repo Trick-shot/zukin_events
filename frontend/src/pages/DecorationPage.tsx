@@ -145,7 +145,7 @@ export function DecorationPage() {
             })}
           </div>
           <p className="mt-6 text-sm text-subtle">
-            Package contents and prices are being finalised with the stylists — ask reception for
+            Package contents and prices are being finalised with the stylists. Ask reception for
             this season's sheet.
           </p>
         </Container>

@@ -1,7 +1,7 @@
 {
-  "//": "TODO: review — first-draft Swahili, not reviewed by a native speaker or the client. Erick to check with the owner before launch.",
+  "//": "TODO: review. First-draft Swahili, not reviewed by a native speaker or the client. Erick to check with the owner before launch.",
   "meta": {
-    "title": "Zukin Hall — Ukumbi wa matukio na mapambo, Dodoma",
+    "title": "Zukin Hall | Ukumbi wa matukio na mapambo, Dodoma",
     "description": "Zukin Hall ni ukumbi wa matukio na huduma ya mapambo Dodoma, Tanzania. Harusi, send-off, kitchen party, siku za kuzaliwa na matukio ya kikazi."
   },
   "a11y": {
@@ -72,7 +72,7 @@
     "backHome": "Rudi ukurasa wa mwanzo"
   },
   "hero": {
-    "heading": "Zukin Hall — ukumbi wa matukio na mapambo, Dodoma",
+    "heading": "Zukin Hall, ukumbi wa matukio na mapambo, Dodoma",
     "eyebrow": "Ukumbi wa matukio na mapambo, Dodoma",
     "canvasLabel": "Ziara ya Zukin Hall: kuwasili getini, uwanja, alama nyekundu na lango, ukumbi uliopambwa, jukwaa na njia ya bibi harusi.",
     "loading": "Inapakia ziara ya ukumbi…",

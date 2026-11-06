@@ -80,7 +80,7 @@ export function TrackPage() {
       errors.phone = 'Enter the phone number you booked with.'
     }
     if (!/^[A-Za-z]{2}-\d{4}-\d{3,4}$/.test(reference.trim())) {
-      errors.reference = 'The reference looks like ZK-2603-0142 — it is in your SMS.'
+      errors.reference = 'The reference looks like ZK-2603-0142. It is in your SMS.'
     }
     setFieldErrors(errors)
     if (Object.keys(errors).length > 0) return
@@ -113,7 +113,7 @@ export function TrackPage() {
           <form onSubmit={onSubmit} noValidate className="w-full max-w-md shrink-0">
             {failed ? (
               <ErrorBanner className="mb-5">
-                We could not check right now. Your details are still here — try again.
+                We could not check right now. Your details are still here, so try again.
               </ErrorBanner>
             ) : null}
             <div className="flex flex-col gap-5">
@@ -208,7 +208,7 @@ function BookingResult({ booking }: { booking: Booking }) {
             </p>
             <p className="mt-1">
               Pay the deposit of {booking.depositAmount} by then and the date is yours. Payment
-              details are in your SMS — or call reception and pay by mobile money or at the
+              details are in your SMS, or call reception and pay by mobile money or at the
               office.
             </p>
           </div>
@@ -226,14 +226,14 @@ function BookingResult({ booking }: { booking: Booking }) {
 
         {booking.status === 'under_review' ? (
           <p className="rounded-sm bg-info-bg px-4 py-3.5 text-sm text-info">
-            Reception is reviewing your request and will call you back — normally within
+            Reception is reviewing your request and will call you back, normally within
             [24 hours] of the request.
           </p>
         ) : null}
 
         {booking.status === 'completed' ? (
           <p className="rounded-sm bg-neutral-bg px-4 py-3.5 text-sm text-muted">
-            This event has taken place. Asante sana — it was a joy hosting you.
+            This event has taken place. Asante sana. It was a joy hosting you.
           </p>
         ) : null}
 
@@ -274,7 +274,7 @@ function BookingResult({ booking }: { booking: Booking }) {
                     >
                       {step.label}
                       {state === 'current' ? (
-                        <span className="ml-2 font-normal text-red">— you are here</span>
+                        <span className="ml-2 font-normal text-red">(you are here)</span>
                       ) : null}
                     </p>
                     {state === 'current' ? (
@@ -294,7 +294,7 @@ function BookingResult({ booking }: { booking: Booking }) {
               ['Name', booking.clientName],
               ['Space', booking.space],
               ['Guests', String(booking.guests)],
-              ['Decoration', booking.decorPackage ?? 'None — venue only'],
+              ['Decoration', booking.decorPackage ?? 'None (venue only)'],
             ] as const
           ).map(([label, value]) => (
             <div key={label} className="hairline flex justify-between gap-6 py-2.5 text-sm">
@@ -306,7 +306,7 @@ function BookingResult({ booking }: { booking: Booking }) {
         </dl>
 
         <p className="text-[13px] text-subtle">
-          Something changed? Call reception on {CONTACT.phone} with your reference — changes are
+          Something changed? Call reception on {CONTACT.phone} with your reference. Changes are
           agreed on the phone, not online, so nothing happens to your booking without you.
         </p>
       </div>

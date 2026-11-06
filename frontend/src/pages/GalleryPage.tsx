@@ -49,7 +49,7 @@ export function GalleryPage() {
       <PageHeading
         crumb="Gallery"
         title="See Zukin Hall for yourself"
-        intro="Real photos from the hall — nothing staged elsewhere, nothing rendered."
+        intro="Real photos from the hall. Nothing staged elsewhere, nothing rendered."
       />
 
       <section aria-label="Photo gallery" className="bg-paper pb-24">

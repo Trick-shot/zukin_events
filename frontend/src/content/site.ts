@@ -33,7 +33,7 @@ export const SPACES: Space[] = [
     description:
       'The hall you have seen in every Zukin photo: white drapery, chandeliers and hanging ' +
       'flowers over the aisle, with the stage and its gold sofa at the far end. It takes a ' +
-      'full wedding — ceremony, meal and dancing — without resetting the room.',
+      'full wedding, from ceremony to meal to dancing, without resetting the room.',
     bestFor: 'Weddings, send-offs and large celebrations',
     photos: { main: 'venue/hall_tables.jpg', side: 'venue/stage_sofa.jpg' },
     included: [
@@ -52,7 +52,7 @@ export const SPACES: Space[] = [
     capacity: { seated: '[000]', cocktail: '[000]', theatre: '[000]' },
     priceFrom: 'TZS [price]',
     description:
-      'A smaller room for kitchen parties, birthdays and company dinners — the same ' +
+      'A smaller room for kitchen parties, birthdays and company dinners. The same ' +
       'decoration team and the same kitchen access, at a size where fifty guests feel ' +
       'like a full house rather than a scattered one.',
     bestFor: 'Kitchen parties, birthdays and corporate dinners',
@@ -168,7 +168,7 @@ export const CONTACT = {
   whatsapp: '[+255 000 000 000]',
   email: '[bookings@zukinhall.co.tz]',
   address: '[Street / plot], Dodoma, Tanzania',
-  hours: 'Monday to Saturday, 9:00 – 18:00',
+  hours: 'Monday to Saturday, 9:00 to 18:00',
   mapsUrl: 'https://maps.google.com/?q=Zukin+Hall+Dodoma',
 } as const
 

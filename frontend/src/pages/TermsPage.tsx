@@ -20,19 +20,19 @@ const SECTIONS = [
   },
   {
     title: 'Paying the balance',
-    body: 'The remaining balance is due [before the event — exact timing to be confirmed]. Payment details (bank and mobile money) are shared by reception with your booking reference.',
+    body: 'The remaining balance is due [before the event; exact timing to be confirmed]. Payment details (bank and mobile money) are shared by reception with your booking reference.',
   },
   {
     title: 'Cancelling or moving a date',
-    body: '[Cancellation and refund rules to be confirmed by the owner — including how much of the deposit is returned and how late a date can be moved.]',
+    body: '[Cancellation and refund rules to be confirmed by the owner, including how much of the deposit is returned and how late a date can be moved.]',
   },
   {
     title: 'Decoration',
-    body: 'Decoration packages are provided by the in-house styling team and agreed separately from the venue booking. Outside decorators are [allowed / not allowed — to be confirmed].',
+    body: 'Decoration packages are provided by the in-house styling team and agreed separately from the venue booking. Outside decorators are [allowed / not allowed, to be confirmed].',
   },
   {
     title: 'During the event',
-    body: 'The hall is handed over dressed and tested. [House rules — sound limits, end times, catering arrangements — to be confirmed by the owner.]',
+    body: 'The hall is handed over dressed and tested. [House rules: sound limits, end times, catering arrangements. To be confirmed by the owner.]',
   },
   {
     title: 'Contact',
@@ -52,7 +52,7 @@ export function TermsPage() {
       <section aria-label="Draft notice" className="bg-paper">
         <Container>
           <p className="max-w-2xl rounded-sm bg-warning-bg px-4 py-3 text-sm text-warning">
-            Draft — this wording summarises the current process and is awaiting the owner's (and a
+            Draft: this wording summarises the current process and is awaiting the owner's (and a
             lawyer's) review. Bracketed items are unconfirmed.
           </p>
         </Container>
