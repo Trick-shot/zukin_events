@@ -34,22 +34,29 @@ export function SpacesPage() {
               </p>
             </div>
 
-            {/* Weighted pair, not equal tiles: one wide, one tall. */}
+            {/* Weighted pair, not equal tiles: one wide, one tall. The
+                layout lives on wrapper divs (min-w-0 included) because an
+                img's intrinsic width sets min-width:auto on a flex item and
+                blows the row out sideways. */}
             <div className="mt-9 flex flex-col gap-4 lg:h-[560px] lg:flex-row">
-              <Photo
-                src={space.photos.main}
-                alt={`${space.name}, set for an event`}
-                width={1800}
-                height={1120}
-                className="rounded-card lg:h-full lg:w-[69%]"
-              />
-              <Photo
-                src={space.photos.side}
-                alt={`A closer look inside the ${space.name.toLowerCase()}`}
-                width={790}
-                height={1120}
-                className="hidden rounded-card lg:block lg:h-full lg:flex-1"
-              />
+              <div className="min-w-0 overflow-hidden rounded-card lg:h-full lg:w-[69%]">
+                <Photo
+                  src={space.photos.main}
+                  alt={`${space.name}, set for an event`}
+                  width={1800}
+                  height={1120}
+                  className="lg:h-full"
+                />
+              </div>
+              <div className="hidden min-w-0 overflow-hidden rounded-card lg:block lg:h-full lg:flex-1">
+                <Photo
+                  src={space.photos.side}
+                  alt={`A closer look inside the ${space.name.toLowerCase()}`}
+                  width={790}
+                  height={1120}
+                  className="h-full"
+                />
+              </div>
             </div>
 
             <div className="mt-10 flex flex-col gap-10 lg:flex-row lg:gap-24">

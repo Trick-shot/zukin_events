@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
+import { BootVeil } from '@/components/ui/BootVeil'
 import { useScrollRestoration } from '@/hooks/useScrollRestoration'
 import { skipToBooking } from '@/lib/skipToBooking'
 
@@ -20,6 +21,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
 
   return (
     <div id="top" className="flex min-h-dvh flex-col">
+      <BootVeil />
       <a
         href="#main"
         className="sr-only rounded-pill bg-red px-5 py-3 text-white focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-100"

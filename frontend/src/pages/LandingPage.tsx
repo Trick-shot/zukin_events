@@ -11,6 +11,37 @@ import { BOOKING_STEPS, CONTACT, EVENT_TYPES, GALLERY_PREVIEW, SPACES } from '@/
 import { HeroSection } from '@/features/hero/HeroSection'
 
 /**
+ * Line illustrations for the four booking steps, in the icon set's own
+ * language (1.5px bronze strokes). Each encodes its step — calendar, sent
+ * envelope, ringing phone, the rings — so they inform as much as decorate.
+ */
+const STEP_ICONS = [
+  // Calendar with a check
+  <svg key="s1" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11">
+    <rect x="6" y="9" width="32" height="29" rx="2.5" />
+    <path d="M6 17h32M14 5v7M30 5v7" />
+    <path d="M16 27l5 5 8-9" />
+  </svg>,
+  // Envelope, just sent
+  <svg key="s2" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11">
+    <rect x="8" y="12" width="30" height="21" rx="2.5" />
+    <path d="M8 14l15 11 15-11" />
+    <path d="M2 20h4M1 26h5" />
+  </svg>,
+  // Phone, ringing
+  <svg key="s3" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="size-11">
+    <path d="M14 7c2 0 4 3 4 6 0 2-2 3-2 4 0 3 6 10 9 10 1.5 0 2-2 4-2 3 0 6 2 6 4s-3 6-6 6C19 35 8 23 8 13c0-3 4-6 6-6Z" />
+    <path d="M27 9c4 1 7 4 8 8M29 3c6 2 10 6 12 12" />
+  </svg>,
+  // The rings
+  <svg key="s4" viewBox="0 0 44 44" fill="none" stroke="currentColor" strokeWidth="1.5" className="size-11">
+    <circle cx="17" cy="24" r="11" />
+    <circle cx="27" cy="24" r="11" />
+    <path d="M22 9l-3 4h6l-3-4Z" strokeLinejoin="round" />
+  </svg>,
+]
+
+/**
  * The landing page, after Figma v3 (node 114:1540 desktop / 116:1282 mobile).
  *
  * Section rhythm is deliberately uneven — white, full-bleed photography,
@@ -242,9 +273,12 @@ export function LandingPage() {
           </h2>
           <ol className="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
             {BOOKING_STEPS.map((step, index) => (
-              <li key={step.title} className="border-t border-line pt-4">
-                <span className="font-display text-lg text-gold-dark">{index + 1}</span>
-                <h3 className="mt-2 font-sans text-base font-semibold">{step.title}</h3>
+              <li key={step.title} className="border-t border-line pt-5">
+                <div className="flex items-start justify-between gap-4 text-gold-dark">
+                  {STEP_ICONS[index]}
+                  <span className="font-display text-lg">{index + 1}</span>
+                </div>
+                <h3 className="mt-4 font-sans text-base font-semibold">{step.title}</h3>
                 <p className="mt-1.5 text-sm text-muted">{step.detail}</p>
               </li>
             ))}
@@ -263,16 +297,26 @@ export function LandingPage() {
       {/* ---- Find us. ---- */}
       <section id="location" aria-labelledby="location-heading" className="bg-paper py-24">
         <Container className="flex flex-col gap-12 lg:flex-row lg:gap-20">
-          <div className="min-h-72 flex-[3] overflow-hidden rounded-card">
-            {/* Swap for the Google Maps embed once the exact pin is confirmed. */}
+          <div className="flex-[3]">
+            <div className="min-h-72 overflow-hidden rounded-card bg-sand">
+              {/* Keyless Google embed; swap the query for the exact plot once
+                  the owner confirms the pin. */}
+              <iframe
+                title="Zukin Hall on Google Maps"
+                src="https://www.google.com/maps?q=Zukin+Hall,+Dodoma,+Tanzania&output=embed"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-96 w-full border-0"
+              />
+            </div>
             <a
               href={CONTACT.mapsUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex size-full min-h-72 flex-col items-center justify-center gap-3 bg-sand text-muted transition-colors hover:text-ink"
+              className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-ink"
             >
-              <MapPin size={28} aria-hidden="true" className="text-gold-dark" />
-              <span className="text-sm font-medium">Open in Google Maps</span>
+              <MapPin size={15} aria-hidden="true" className="text-gold-dark" />
+              Open in Google Maps
             </a>
           </div>
           <div className="flex-[2]">

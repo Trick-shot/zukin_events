@@ -31,22 +31,28 @@ export function SpaceDetailPage() {
       </PageHeading>
 
       <section aria-label={`Photographs of the ${space.name.toLowerCase()}`} className="bg-paper">
+        {/* Layout on wrappers, not the imgs: an img's intrinsic width sets
+            min-width:auto on a flex item and overflows the viewport. */}
         <div className="flex flex-col gap-3 px-3 lg:h-[560px] lg:flex-row">
-          <Photo
-            src={space.photos.main}
-            alt={`${space.name}, set for an event`}
-            width={1800}
-            height={1120}
-            priority
-            className="lg:h-full lg:w-[69%]"
-          />
-          <Photo
-            src={space.photos.side}
-            alt={`A closer look inside the ${space.name.toLowerCase()}`}
-            width={790}
-            height={1120}
-            className="hidden lg:block lg:h-full lg:flex-1"
-          />
+          <div className="min-w-0 overflow-hidden lg:h-full lg:w-[69%]">
+            <Photo
+              src={space.photos.main}
+              alt={`${space.name}, set for an event`}
+              width={1800}
+              height={1120}
+              priority
+              className="lg:h-full"
+            />
+          </div>
+          <div className="hidden min-w-0 overflow-hidden lg:block lg:h-full lg:flex-1">
+            <Photo
+              src={space.photos.side}
+              alt={`A closer look inside the ${space.name.toLowerCase()}`}
+              width={790}
+              height={1120}
+              className="h-full"
+            />
+          </div>
         </div>
       </section>
 

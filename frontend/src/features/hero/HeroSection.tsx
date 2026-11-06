@@ -10,6 +10,7 @@ import {
   frameFromProgress,
 } from '@/features/hero/frameMath'
 import { loadManifest, type HeroManifest } from '@/features/hero/manifest'
+import { bootDone } from '@/lib/bootGate'
 import { useFrameSequence } from '@/features/hero/useFrameSequence'
 import { useHeroScroll } from '@/features/hero/useHeroScroll'
 import { useSequenceVariant } from '@/features/hero/useSequenceVariant'
@@ -107,6 +108,7 @@ export function HeroSection() {
     setIntroFrame(intro.from)
 
     let raf = 0
+    let cancelled = false
     let last = performance.now()
 
     const finish = () => {
@@ -135,12 +137,19 @@ export function HeroSection() {
     }
 
     const cleanup = () => {
+      cancelled = true
       window.cancelAnimationFrame(raf)
       window.removeEventListener('scroll', onScroll)
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true })
-    raf = window.requestAnimationFrame(tick)
+    // The film waits for the boot veil to lift, so its first seconds play on
+    // a visible screen instead of behind the white overlay.
+    void bootDone.then(() => {
+      if (cancelled) return
+      last = performance.now()
+      window.addEventListener('scroll', onScroll, { passive: true })
+      raf = window.requestAnimationFrame(tick)
+    })
     return cleanup
   }, [manifest, pinned, sequence])
 

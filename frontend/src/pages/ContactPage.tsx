@@ -62,15 +62,24 @@ export function ContactPage() {
 
       <section aria-labelledby="visit-heading" className="texture-kanga bg-sand py-20">
         <Container className="flex flex-col gap-12 lg:flex-row lg:gap-20">
-          <div className="min-h-72 flex-[3] overflow-hidden rounded-card">
+          <div className="flex-[3]">
+            <div className="min-h-72 overflow-hidden rounded-card bg-paper">
+              <iframe
+                title="Zukin Hall on Google Maps"
+                src="https://www.google.com/maps?q=Zukin+Hall,+Dodoma,+Tanzania&output=embed"
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="h-96 w-full border-0"
+              />
+            </div>
             <a
               href={CONTACT.mapsUrl}
               target="_blank"
               rel="noreferrer"
-              className="flex size-full min-h-72 flex-col items-center justify-center gap-3 bg-paper text-muted transition-colors hover:text-ink"
+              className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-ink"
             >
-              <MapPin size={28} aria-hidden="true" className="text-gold-dark" />
-              <span className="text-sm font-medium">Open in Google Maps</span>
+              <MapPin size={15} aria-hidden="true" className="text-gold-dark" />
+              Open in Google Maps
             </a>
           </div>
           <div className="flex-[2]">
