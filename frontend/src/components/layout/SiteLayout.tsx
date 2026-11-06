@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
+import { useScrollRestoration } from '@/hooks/useScrollRestoration'
 import { skipToBooking } from '@/lib/skipToBooking'
 
 /**
@@ -15,6 +16,7 @@ import { skipToBooking } from '@/lib/skipToBooking'
  */
 export function SiteLayout({ children }: { children: ReactNode }) {
   const { t } = useTranslation()
+  useScrollRestoration()
 
   return (
     <div id="top" className="flex min-h-dvh flex-col">

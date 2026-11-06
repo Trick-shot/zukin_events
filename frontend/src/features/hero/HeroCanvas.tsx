@@ -12,11 +12,28 @@ import type { FrameSequence } from '@/features/hero/useFrameSequence'
 
 const MAX_DPR = 2
 
+/**
+ * How far a stand-in frame may be from the target before the canvas prefers
+ * to keep what it last painted (or stay dark) instead. Without this, a reload
+ * at the end of the sequence paints whatever early frames have arrived and
+ * the hero looks like it is fast-forwarding to catch up.
+ */
+const MAX_STANDIN_DISTANCE = 18
+
+export type HeroIntroState = {
+  /** True while the title film is playing; scroll is ignored meanwhile. */
+  active: boolean
+  /** The intro frame currently due on screen. */
+  frame: number
+}
+
 export type HeroCanvasProps = {
   sequence: FrameSequence
   scrub: FrameRange
   progressRef: React.RefObject<number>
-  /** Static mode for prefers-reduced-motion: draw frame 1 and stop. */
+  /** Intro playback state, owned by HeroSection's rAF; null when no intro. */
+  introRef?: React.RefObject<HeroIntroState>
+  /** Static mode for prefers-reduced-motion: draw the first frame and stop. */
   still: boolean
   label: string
 }
@@ -24,15 +41,23 @@ export type HeroCanvasProps = {
 /**
  * The frame sequence, painted.
  *
- * One rAF loop owns all drawing. It reads scroll progress from a ref and the
- * decoded frames from a Map, so it never depends on a React render — which is
- * what lets the scrub hold 60fps while frames are still arriving.
+ * One rAF loop owns all drawing. It reads scroll progress (or the intro
+ * clock) from refs and the decoded frames from a Map, so it never depends on
+ * a React render — which is what lets the scrub hold 60fps while frames are
+ * still arriving.
  *
  * The loop idles: if the drawn frame already matches the target and nothing
  * has resized, it schedules the next tick without touching the canvas. A
  * motionless page therefore costs a comparison per frame, not a repaint.
  */
-export function HeroCanvas({ sequence, scrub, progressRef, still, label }: HeroCanvasProps) {
+export function HeroCanvas({
+  sequence,
+  scrub,
+  progressRef,
+  introRef,
+  still,
+  label,
+}: HeroCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -42,7 +67,10 @@ export function HeroCanvas({ sequence, scrub, progressRef, still, label }: HeroC
     if (!context) return
 
     let raf = 0
-    let currentFrame = scrub.from
+    // NaN until the first tick: the first paint SNAPS to wherever the visitor
+    // is (a restored mid-page scroll position included) instead of gliding
+    // there from frame 1, which read as a sped-up replay on reload.
+    let currentFrame = Number.NaN
     let lastDrawn = -1
     let lastWidth = 0
     let lastHeight = 0
@@ -64,6 +92,10 @@ export function HeroCanvas({ sequence, scrub, progressRef, still, label }: HeroC
     const draw = (frame: number, progress: number) => {
       const index = nearestLoadedFrame(sequence.loaded, frame, scrub.to)
       if (index === null) return
+      // A stand-in from a completely different part of the sequence is worse
+      // than holding the last painted frame (or the dark stage): skip it and
+      // let the priority loader bring the right frame in a moment.
+      if (index !== frame && Math.abs(index - frame) > MAX_STANDIN_DISTANCE) return
       const image = sequence.images.get(index)
       if (!image) return
 
@@ -84,11 +116,24 @@ export function HeroCanvas({ sequence, scrub, progressRef, still, label }: HeroC
       raf = window.requestAnimationFrame(tick)
 
       const resized = resize()
-      const progress = still ? 0 : progressRef.current
-      const target = still ? scrub.from : frameFromProgress(progress, scrub)
+      const intro = introRef?.current
+      const introActive = !still && intro !== undefined && intro !== null && intro.active
 
-      // Lerp so a fast flick glides through frames instead of snapping.
-      currentFrame = still ? scrub.from : lerpFrame(currentFrame, target)
+      const progress = still || introActive ? 0 : progressRef.current
+      const target = still
+        ? scrub.from
+        : introActive
+          ? intro.frame
+          : frameFromProgress(progress, scrub)
+
+      // First tick, or intro -> scrub hand-off: start from the target itself.
+      // Lerp afterwards, so a fast flick glides through frames instead of
+      // snapping.
+      currentFrame = Number.isNaN(currentFrame)
+        ? target
+        : still
+          ? scrub.from
+          : lerpFrame(currentFrame, target)
       const rounded = Math.round(currentFrame)
 
       // Repaint only when something actually changed. `lastDrawn` tracks the
@@ -103,14 +148,14 @@ export function HeroCanvas({ sequence, scrub, progressRef, still, label }: HeroC
 
     raf = window.requestAnimationFrame(tick)
     return () => window.cancelAnimationFrame(raf)
-  }, [sequence, scrub, progressRef, still])
+  }, [sequence, scrub, progressRef, introRef, still])
 
   return (
     <canvas
       ref={canvasRef}
       role="img"
       aria-label={label}
-      className="absolute inset-0 size-full bg-plum-deep"
+      className="absolute inset-0 size-full bg-wine-900"
     />
   )
 }

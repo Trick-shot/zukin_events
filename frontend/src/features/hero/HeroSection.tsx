@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { BookingBar } from '@/features/booking-bar/BookingBar'
-import { HeroCanvas } from '@/features/hero/HeroCanvas'
+import { HeroCanvas, type HeroIntroState } from '@/features/hero/HeroCanvas'
 import {
   bookingBarReveal,
   captionOpacity,
+  clamp01,
   frameFromProgress,
 } from '@/features/hero/frameMath'
 import { loadManifest, type HeroManifest } from '@/features/hero/manifest'
@@ -16,12 +17,33 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { Container } from '@/components/layout/Container'
 
 /**
- * How tall the pinned section is, as a multiple of the viewport. The brief
- * asks for 400-500vh; 450 sits in the middle and gives 165 frames roughly
- * 21px of scroll each at an 800px viewport, which scrubs smoothly without
- * feeling like the page has stopped responding.
+ * How tall the pinned section is, as a multiple of the viewport. Sized for
+ * the scrub range alone (the intro plays itself and consumes no scroll):
+ * 79 scrubbed frames across 360vh is ~26px of scroll per frame at an 800px
+ * viewport — smooth without feeling like the page has stopped responding.
  */
-const PIN_VH = 450
+const PIN_VH = 360
+
+/** Title-film playback rate. The source was sampled at 3fps; 10fps reads as
+ * deliberate slow cinema rather than a stutter, and finishes in ~2.5s. */
+const INTRO_FPS = 10
+
+/**
+ * Estimate the frame under the restored scroll position before any layout
+ * has been measured. The hero is the first element on the page, so its top
+ * is 0 and the geometry is fully known from the viewport alone. This seeds
+ * the frame loader's priority so a mid-page reload downloads the frames the
+ * visitor is actually standing on first.
+ */
+function estimateInitialFrame(manifest: HeroManifest | null): number {
+  if (!manifest) return 1
+  if (typeof window === 'undefined') return manifest.scrub.from
+  const viewport = window.innerHeight
+  const scrollable = (PIN_VH / 100) * viewport - viewport
+  if (scrollable <= 0) return manifest.scrub.from
+  const progress = clamp01(window.scrollY / scrollable)
+  return frameFromProgress(progress, manifest.scrub)
+}
 
 export function HeroSection() {
   const { t } = useTranslation()
@@ -42,25 +64,107 @@ export function HeroSection() {
     return () => controller.abort()
   }, [])
 
+  // Which frame the visitor is on, for the loader's download priority.
+  // Updated by the intro clock and by every scroll; read by the loader's
+  // workers on each pick.
+  const priorityRef = useRef(1)
+
   const { folder, variant } = useSequenceVariant(manifest)
-  const { sequence, status } = useFrameSequence(manifest, folder, variant)
+  const { sequence, status } = useFrameSequence(manifest, folder, variant, priorityRef)
 
   // Pinning is off under prefers-reduced-motion, and also if the sequence
-  // cannot load at all — a 450vh section of nothing would be a scroll trap.
+  // cannot load at all — a 360vh section of nothing would be a scroll trap.
   const broken = manifestError !== null || status.error !== null
   const pinned = !reducedMotion && !broken
   const { progressRef, progress } = useHeroScroll(sectionRef, pinned)
 
   const scrub = manifest?.scrub ?? { from: 1, to: 1 }
-  const frame = pinned ? frameFromProgress(progress, scrub) : scrub.from
-  const reveal = pinned ? bookingBarReveal(progress) : 1
+
+  // ---- Intro title film ----------------------------------------------------
+  // Frames intro.from..intro.to play themselves once, before scroll takes
+  // over. The intro is skipped outright when the page was reloaded mid-scroll
+  // (the visitor has already seen it and is standing elsewhere) and under
+  // reduced motion; scrolling during playback ends it immediately — a scroll
+  // is a statement of intent, not something to fight.
+  const introRef = useRef<HeroIntroState>({ active: false, frame: 1 })
+  const [introDone, setIntroDone] = useState(false)
+  const [introFrame, setIntroFrame] = useState(1)
+
+  useEffect(() => {
+    if (!manifest) return
+    priorityRef.current = estimateInitialFrame(manifest)
+
+    const intro = manifest.intro
+    if (!intro || !pinned || window.scrollY > window.innerHeight / 2) {
+      // oxlint-disable-next-line react/set-state-in-effect
+      setIntroDone(true)
+      return
+    }
+
+    introRef.current = { active: true, frame: intro.from }
+    priorityRef.current = intro.from
+    // oxlint-disable-next-line react/set-state-in-effect
+    setIntroFrame(intro.from)
+
+    let raf = 0
+    let last = performance.now()
+
+    const finish = () => {
+      introRef.current = { active: false, frame: intro.to }
+      setIntroDone(true)
+      cleanup()
+    }
+
+    const tick = (now: number) => {
+      raf = window.requestAnimationFrame(tick)
+      if (now - last < 1000 / INTRO_FPS) return
+      const next = introRef.current.frame + 1
+      // Hold on the current frame until the next one has decoded — the
+      // priority loader is fetching exactly this neighbourhood, so a pause
+      // here is a beat, not a stall.
+      if (!sequence.loaded.has(next)) return
+      last = now
+      introRef.current = { active: true, frame: next }
+      priorityRef.current = next
+      setIntroFrame(next)
+      if (next >= intro.to) finish()
+    }
+
+    const onScroll = () => {
+      if (window.scrollY > 8) finish()
+    }
+
+    const cleanup = () => {
+      window.cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    raf = window.requestAnimationFrame(tick)
+    return cleanup
+  }, [manifest, pinned, sequence])
+
+  const introActive = pinned && !introDone && manifest?.intro !== undefined
+
+  // Scroll keeps the loader pointed at the visitor's frame once the intro is
+  // over (and harmlessly during it; the intro writes afterwards each tick).
+  useEffect(() => {
+    if (!introActive) priorityRef.current = frameFromProgress(progress, scrub)
+  }, [progress, scrub, introActive])
+
+  const frame = !pinned
+    ? scrub.from
+    : introActive
+      ? introFrame
+      : frameFromProgress(progress, scrub)
+  const reveal = pinned ? (introActive ? 0 : bookingBarReveal(progress)) : 1
 
   return (
     <section
       id="hero"
       ref={sectionRef}
       aria-labelledby="hero-heading"
-      className="relative isolate on-dark bg-plum-deep text-white"
+      className="relative isolate on-dark bg-wine-900 text-white"
       style={pinned ? { height: `${PIN_VH}vh` } : undefined}
     >
       {/* The sticky stage. Under reduced motion it becomes a normal 100vh
@@ -77,6 +181,7 @@ export function HeroSection() {
             sequence={sequence}
             scrub={scrub}
             progressRef={progressRef}
+            introRef={introRef}
             still={!pinned}
             label={t('hero.canvasLabel')}
           />
@@ -87,8 +192,7 @@ export function HeroSection() {
             for the overlay text cannot rely on the frame being dark:
               - vignette, for the camera feel;
               - bottom, carrying the venue name and the booking bar;
-              - left, carrying the captions.
-            Without the left one, "The hall" is unreadable over frame 95. */}
+              - left, carrying the captions. */}
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(20,7,15,0.55)_100%)]"
@@ -173,9 +277,9 @@ export function HeroSection() {
           </Container>
         </div>
 
-        {/* Thin scroll progress cue, replacing the design's static SCROLL
-            mark now that the hero is a timeline. */}
-        {pinned && (
+        {/* Thin scroll progress cue. Hidden while the title film plays — the
+            page is not asking to be scrolled yet. */}
+        {pinned && !introActive && (
           <div
             aria-hidden="true"
             className="absolute top-1/2 right-6 hidden h-24 w-px -translate-y-1/2 bg-white/25 lg:block"

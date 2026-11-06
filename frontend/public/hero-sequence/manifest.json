@@ -1,10 +1,10 @@
 {
   "frames": 104,
   "scrub": {
-    "from": 1,
+    "from": 26,
     "to": 104
   },
-  "scrubNote": "Order approved by Erick 2026-11-06 (hero_order_preview_v3): two exterior views only, journey ends inside, booking bar appears over the stage/aisle.",
+  "scrubNote": "Frames 1-25 (aerial orbit + front sign) auto-play as a title film on load; scrolling drives 26-104, so the scrub begins at 'Step inside' and ends on the interior aisle under the booking bar. Order approved by Erick 2026-11-06.",
   "pattern": "f_%04d.webp",
   "folders": {
     "desktop": "d",
@@ -52,5 +52,9 @@
       "caption": "Book your date",
       "note": "interior aisle; booking bar appears here"
     }
-  ]
+  ],
+  "intro": {
+    "from": 1,
+    "to": 25
+  }
 }

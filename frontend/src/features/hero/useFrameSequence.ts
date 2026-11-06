@@ -7,12 +7,10 @@ import type { HeroManifest } from '@/features/hero/manifest'
 /**
  * How many frames load before scrubbing is declared usable.
  *
- * The brief budgets ~600KB for the initial hero payload. Measured against the
- * committed frames, 15 desktop frames is 652KB — over it — while 15 mobile
- * frames is 286KB. So the count is per-variant rather than a single number:
- * 12 desktop frames measure ~520KB, and 12 frames still covers the first ~7%
- * of a 450vh scroll, which is far more runway than the background loader
- * needs to stay ahead of a reader.
+ * The brief budgets ~600KB for the initial hero payload. The counts are
+ * per-variant because desktop frames are roughly twice the bytes of mobile
+ * ones; with the 1920px set, 12 desktop frames is ~2MB — the budget is
+ * documented as outgrown in docs/UI_HANDOFF.md, traded for image quality.
  */
 export const EAGER_FRAME_COUNT: Record<SequenceVariant, number> = {
   desktop: 12,
@@ -29,9 +27,9 @@ export type FrameSequence = {
 }
 
 export type SequenceStatus = {
-  /** The first EAGER_FRAME_COUNT frames have decoded; scrubbing can start. */
+  /** The eager neighbourhood has decoded; scrubbing can start. */
   ready: boolean
-  /** Frame 1 has decoded; the poster can be drawn. */
+  /** The first (priority) frame has decoded; a poster can be drawn. */
   posterReady: boolean
   /** 0..1 across the whole sequence, for diagnostics. */
   loadedFraction: number
@@ -75,20 +73,30 @@ function loadImage(src: string, signal: AbortSignal): Promise<HTMLImageElement> 
 /**
  * Progressive loader for the frame sequence.
  *
- * Three stages, in priority order:
- *   1. frame 1, so a poster paints immediately and the stage is never blank;
- *   2. the first ~15 frames, after which scrubbing is usable;
- *   3. everything else, a few at a time in the background.
+ * Priority-driven rather than front-to-back: `priorityRef` holds the frame
+ * the visitor is currently standing on (the hero updates it on every scroll
+ * and during the intro), and every stage of the loader works outward from
+ * it —
+ *   1. the priority frame itself, so the right poster paints immediately —
+ *      on a mid-page reload that is the frame under the restored scroll
+ *      position, not frame 1;
+ *   2. its nearest EAGER_FRAME_COUNT neighbours, after which scrubbing is
+ *      declared usable;
+ *   3. everything else, a few at a time, always picking the unloaded frame
+ *      closest to wherever the visitor is NOW.
  *
- * Frames live in a ref-held Map rather than React state on purpose: 165
- * decoded images arriving one at a time would be 165 renders, and the canvas
- * reads them from inside a rAF loop that never needs a re-render to repaint.
- * Only the coarse status flags are state.
+ * This is what stops a reload at the end of the sequence from looking like a
+ * fast-forward: the tail frames arrive first because the visitor is standing
+ * on them.
+ *
+ * The whole range from the intro's first frame to the scrub's last is
+ * downloaded; anything outside (trimmed handles) is never fetched.
  */
 export function useFrameSequence(
   manifest: HeroManifest | null,
   folder: string | null,
   variant: SequenceVariant,
+  priorityRef?: React.RefObject<number>,
 ): { sequence: FrameSequence; status: SequenceStatus } {
   // The sequence container is state, not a ref, even though the Map and Set
   // inside it are mutated without re-rendering. Its identity has to change
@@ -110,11 +118,9 @@ export function useFrameSequence(
     if (!manifest || !folder) return
 
     // Switching variant (desktop <-> mobile) invalidates every decoded frame.
-    // Loading 165 images over the network is exactly the external system an
+    // Loading ~100 images over the network is exactly the external system an
     // effect is for, so resetting here is the intended shape, not a cascade.
     const sequence: FrameSequence = { images: new Map(), loaded: new Set() }
-    // Starting a 165-image network load is the external system this effect
-    // exists to synchronise with, so the reset belongs here.
     // oxlint-disable-next-line react/set-state-in-effect
     setSequence(sequence)
     // oxlint-disable-next-line react/set-state-in-effect
@@ -122,34 +128,65 @@ export function useFrameSequence(
 
     const controller = new AbortController()
     const { signal } = controller
-    // Only the scrub range is downloaded. Fetching frames the hero will never
-    // draw would spend a visitor's data on a fade-out they cannot reach.
-    const { from, to } = manifest.scrub
+    const from = manifest.intro
+      ? Math.min(manifest.intro.from, manifest.scrub.from)
+      : manifest.scrub.from
+    const to = manifest.scrub.to
     const total = to - from + 1
+
+    const clampIndex = (value: number) =>
+      Math.max(from, Math.min(to, Math.round(Number.isFinite(value) ? value : from)))
+    const priority = () => clampIndex(priorityRef?.current ?? from)
+
+    const pending = new Set<number>(
+      Array.from({ length: total }, (_, offset) => from + offset),
+    )
+
+    /** The unloaded frame closest to where the visitor is right now. */
+    const takeNearest = (): number | null => {
+      const target = priority()
+      let best: number | null = null
+      let bestDistance = Infinity
+      for (const index of pending) {
+        const distance = Math.abs(index - target)
+        if (distance < bestDistance) {
+          best = index
+          bestDistance = distance
+          if (distance === 0) break
+        }
+      }
+      if (best !== null) pending.delete(best)
+      return best
+    }
 
     const record = (index: number, image: HTMLImageElement) => {
       sequence.images.set(index, image)
       sequence.loaded.add(index)
     }
 
+    const fetchFrame = async (index: number) => {
+      const image = await loadImage(framePath(manifest.pattern, folder, index), signal)
+      if (!signal.aborted) record(index, image)
+    }
+
     const run = async () => {
       try {
-        const poster = await loadImage(framePath(manifest.pattern, folder, from), signal)
+        const posterIndex = takeNearest()
+        if (posterIndex === null) return
+        await fetchFrame(posterIndex)
         if (signal.aborted) return
-        record(from, poster)
         setStatus((previous) => ({
           ...previous,
           posterReady: true,
           loadedFraction: sequence.loaded.size / total,
         }))
 
-        const eagerEnd = from + Math.min(EAGER_FRAME_COUNT[variant], total) - 1
-        await Promise.all(
-          Array.from({ length: eagerEnd - from }, (_, offset) => from + offset + 1).map(async (index) => {
-            const image = await loadImage(framePath(manifest.pattern, folder, index), signal)
-            if (!signal.aborted) record(index, image)
-          }),
-        )
+        const eager: number[] = []
+        for (let i = 1; i < Math.min(EAGER_FRAME_COUNT[variant], total); i += 1) {
+          const index = takeNearest()
+          if (index !== null) eager.push(index)
+        }
+        await Promise.all(eager.map(fetchFrame))
         if (signal.aborted) return
         setStatus((previous) => ({
           ...previous,
@@ -157,20 +194,18 @@ export function useFrameSequence(
           loadedFraction: sequence.loaded.size / total,
         }))
 
-        // Background fill. A shared cursor with a few workers keeps the
-        // network busy without opening 150 parallel requests, which on a
-        // phone would starve the frames the visitor is actually looking at.
-        let cursor = eagerEnd + 1
+        // Background fill. A few workers keep the network busy without
+        // opening 100 parallel requests; each one re-reads the priority on
+        // every pick, so a visitor who jumps to the end pulls the tail
+        // frames forward immediately.
         const worker = async () => {
           while (!signal.aborted) {
-            const index = cursor
-            cursor += 1
-            if (index > to) return
+            const index = takeNearest()
+            if (index === null) return
             try {
-              const image = await loadImage(framePath(manifest.pattern, folder, index), signal)
+              await fetchFrame(index)
               if (signal.aborted) return
-              record(index, image)
-              if (index % 10 === 0 || index === to) {
+              if (sequence.loaded.size % 10 === 0 || pending.size === 0) {
                 setStatus((previous) => ({
                   ...previous,
                   loadedFraction: sequence.loaded.size / total,
@@ -203,7 +238,7 @@ export function useFrameSequence(
 
     void run()
     return () => controller.abort()
-  }, [manifest, folder, variant])
+  }, [manifest, folder, variant, priorityRef])
 
   return { sequence, status }
 }

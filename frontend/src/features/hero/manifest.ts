@@ -33,6 +33,13 @@ export type HeroManifest = {
    * magic number inside a component.
    */
   scrub: FrameRange
+  /**
+   * Frames that auto-play as a short title film when the hero first appears,
+   * before any scrolling. Scroll progress 0 then lands on `scrub.from`, so an
+   * intro ending at `scrub.from - 1` hands over seamlessly. Optional: without
+   * it the hero is pure scrub, as before.
+   */
+  intro?: FrameRange
   sizes?: { desktop?: string; mobile?: string }
   source?: string
   beats: HeroBeat[]
@@ -96,9 +103,22 @@ export function parseManifest(value: unknown): HeroManifest {
         }
       : { from: 1, to: raw.frames }
 
+  const introRaw = raw.intro as Record<string, unknown> | undefined
+  const intro: FrameRange | undefined =
+    typeof introRaw === 'object' &&
+    introRaw !== null &&
+    typeof introRaw.from === 'number' &&
+    typeof introRaw.to === 'number'
+      ? {
+          from: Math.max(1, Math.min(introRaw.from, raw.frames)),
+          to: Math.max(1, Math.min(introRaw.to, raw.frames)),
+        }
+      : undefined
+
   return {
     frames: raw.frames,
     scrub,
+    intro,
     pattern: raw.pattern,
     folders: { desktop: folders.desktop, mobile: folders.mobile },
     sizes: raw.sizes as HeroManifest['sizes'],

@@ -70,10 +70,10 @@ describe('HeroSection under prefers-reduced-motion', () => {
 describe('HeroSection with motion allowed', () => {
   beforeEach(() => mockReducedMotion(false))
 
-  it('pins the section to 450vh', async () => {
+  it('pins the section to 360vh', async () => {
     const { container } = renderWithProviders(<HeroSection />)
     await waitFor(() =>
-      expect((container.querySelector('#hero') as HTMLElement).style.height).toBe('450vh'),
+      expect((container.querySelector('#hero') as HTMLElement).style.height).toBe('360vh'),
     )
   })
 
