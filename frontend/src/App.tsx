@@ -1,17 +1,37 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { Suspense, lazy } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router'
 
 import { SiteLayout } from '@/components/layout/SiteLayout'
+import { PageLoader } from '@/components/ui/PageLoader'
 import { ToastProvider } from '@/components/ui/Toast'
-import { BookPage } from '@/pages/BookPage'
-import { ContactPage } from '@/pages/ContactPage'
-import { DecorationPage } from '@/pages/DecorationPage'
-import { GalleryPage } from '@/pages/GalleryPage'
 import { LandingPage } from '@/pages/LandingPage'
-import { NotFoundPage } from '@/pages/NotFoundPage'
-import { SpaceDetailPage } from '@/pages/SpaceDetailPage'
-import { SpacesPage } from '@/pages/SpacesPage'
-import { TermsPage } from '@/pages/TermsPage'
+
+/**
+ * The landing page ships in the main bundle — the first visit must show the
+ * hero immediately, never a loader. Every other page is its own chunk, so on
+ * a slow connection the rose PageLoader (white screen, Lottie) covers the
+ * wait. PageLoader itself only appears after 300ms, so on good connections
+ * navigation stays instant with no flash.
+ */
+const SpacesPage = lazy(() => import('@/pages/SpacesPage').then((m) => ({ default: m.SpacesPage })))
+const SpaceDetailPage = lazy(() =>
+  import('@/pages/SpaceDetailPage').then((m) => ({ default: m.SpaceDetailPage })),
+)
+const DecorationPage = lazy(() =>
+  import('@/pages/DecorationPage').then((m) => ({ default: m.DecorationPage })),
+)
+const GalleryPage = lazy(() =>
+  import('@/pages/GalleryPage').then((m) => ({ default: m.GalleryPage })),
+)
+const ContactPage = lazy(() =>
+  import('@/pages/ContactPage').then((m) => ({ default: m.ContactPage })),
+)
+const TermsPage = lazy(() => import('@/pages/TermsPage').then((m) => ({ default: m.TermsPage })))
+const BookPage = lazy(() => import('@/pages/BookPage').then((m) => ({ default: m.BookPage })))
+const NotFoundPage = lazy(() =>
+  import('@/pages/NotFoundPage').then((m) => ({ default: m.NotFoundPage })),
+)
 
 /**
  * One client for the app. `staleTime` is generous because spaces, packages
@@ -35,22 +55,24 @@ export default function App() {
       <BrowserRouter>
         <ToastProvider>
           <SiteLayout>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/spaces" element={<SpacesPage />} />
-              <Route path="/spaces/:slug" element={<SpaceDetailPage />} />
-              <Route path="/decoration" element={<DecorationPage />} />
-              <Route path="/gallery" element={<GalleryPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/terms" element={<TermsPage />} />
-              <Route path="/book" element={<BookPage />} />
-              {/* The real tracking and site-visit flows are the next
-                  milestone; until then both land on the booking stub so no
-                  CTA on the site points at a 404. */}
-              <Route path="/track" element={<BookPage />} />
-              <Route path="/site-visit" element={<BookPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/spaces" element={<SpacesPage />} />
+                <Route path="/spaces/:slug" element={<SpaceDetailPage />} />
+                <Route path="/decoration" element={<DecorationPage />} />
+                <Route path="/gallery" element={<GalleryPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/book" element={<BookPage />} />
+                {/* The real tracking and site-visit flows are the next
+                    milestone; until then both land on the booking stub so no
+                    CTA on the site points at a 404. */}
+                <Route path="/track" element={<BookPage />} />
+                <Route path="/site-visit" element={<BookPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </Suspense>
           </SiteLayout>
         </ToastProvider>
       </BrowserRouter>

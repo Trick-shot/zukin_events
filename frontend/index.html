@@ -11,7 +11,42 @@
       name="description"
       content="Zukin Hall is an event venue and decoration service in Dodoma, Tanzania."
     />
-    <meta name="theme-color" content="#2b0f22" />
+    <meta name="theme-color" content="#2a0a16" />
+    <style>
+      /* First-paint splash: a white screen with a quiet bronze ring, shown
+         while the JS bundle loads and removed the moment React mounts
+         (#root gets children). Kept inline so it needs no network. Under
+         prefers-reduced-motion the ring holds still. */
+      #root:empty::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background: #fff;
+      }
+      #root:empty::after {
+        content: '';
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 44px;
+        height: 44px;
+        margin: -22px 0 0 -22px;
+        border-radius: 50%;
+        border: 3px solid #e7e4df;
+        border-top-color: #9a8c6f;
+        animation: zukin-splash 0.9s linear infinite;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #root:empty::after {
+          animation: none;
+        }
+      }
+      @keyframes zukin-splash {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
