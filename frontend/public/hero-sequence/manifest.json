@@ -1,62 +1,56 @@
 {
-  "frames": 165,
+  "frames": 104,
   "scrub": {
     "from": 1,
-    "to": 162
+    "to": 104
   },
-  "scrubNote": "Frames the hero actually plays. The placeholder clip fades to black over 163-165, and ending the pinned section on a black screen under the booking bar reads as a bug. Widen this to the full range once a purpose-shot walkthrough replaces these frames.",
+  "scrubNote": "Order approved by Erick 2026-11-06 (hero_order_preview_v3): two exterior views only, journey ends inside, booking bar appears over the stage/aisle.",
   "pattern": "f_%04d.webp",
   "folders": {
     "desktop": "d",
     "mobile": "m"
   },
   "sizes": {
-    "desktop": "1280px wide",
-    "mobile": "720px wide"
+    "desktop": "1920px wide, graded (eq c1.05 s1.08 b-0.01 + unsharp 0.3), q78",
+    "mobile": "960px wide, q75"
   },
-  "source": "Frames sampled at 3 fps from the venue clip, in the clip's own order (placeholder: replace with a purpose-shot walkthrough).",
+  "source": "Re-extracted at 3 fps directly from assets-src/zukin_clip.mp4 (1920x1080, 21 Mbps) \u2014 never from the old compressed frames. Old frame numbers per range: 27-39, 51-62, 63-80, 81-107, 108-135, 136-141.",
   "beats": [
     {
       "from": 1,
-      "to": 26,
-      "caption": "Arrive",
-      "note": "exterior and gate"
-    },
-    {
-      "from": 27,
-      "to": 53,
+      "to": 13,
       "caption": "The venue",
-      "note": "aerial, paved yard"
+      "note": "continuous aerial orbit"
     },
     {
-      "from": 54,
-      "to": 62,
+      "from": 14,
+      "to": 25,
       "caption": "Zukin Hall",
-      "note": "red sign and entrance"
+      "note": "front and red sign, held"
     },
     {
-      "from": 63,
-      "to": 80,
+      "from": 26,
+      "to": 43,
       "caption": "Step inside",
       "note": "doorway and arch"
     },
     {
-      "from": 81,
-      "to": 107,
+      "from": 44,
+      "to": 70,
       "caption": "The hall",
       "note": "ceiling, tables, table setting"
     },
     {
-      "from": 108,
-      "to": 135,
+      "from": 71,
+      "to": 98,
       "caption": "Made for the day",
       "note": "stage, chandelier, aisle"
     },
     {
-      "from": 136,
-      "to": 162,
+      "from": 99,
+      "to": 104,
       "caption": "Book your date",
-      "note": "aerial; booking bar appears"
+      "note": "interior aisle; booking bar appears here"
     }
   ]
 }
