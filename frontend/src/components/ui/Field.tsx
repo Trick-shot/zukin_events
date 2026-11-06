@@ -38,7 +38,10 @@ export function Field({ label, error, helper, className, ...inputProps }: FieldP
         )}
       />
       {error ? (
-        <p id={`${id}-error`} className="text-[13px] text-red-dark">
+        <p
+          id={`${id}-error`}
+          className="text-[13px] text-red-dark motion-safe:animate-[rise-in_180ms_ease-out]"
+        >
           {error}
         </p>
       ) : helper ? (

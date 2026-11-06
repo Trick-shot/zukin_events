@@ -23,6 +23,7 @@ export function ErrorBanner({
       role="alert"
       className={cn(
         'flex items-center gap-3 rounded-sm bg-rose-tint px-4 py-3.5 text-sm text-red-dark',
+        'motion-safe:animate-[rise-in_200ms_ease-out]',
         className,
       )}
     >

@@ -19,7 +19,12 @@ export function EmptyState({
   className?: string
 }) {
   return (
-    <div className={cn('rounded-sm bg-sand px-6 py-7', className)}>
+    <div
+      className={cn(
+        'rounded-sm bg-sand px-6 py-7 motion-safe:animate-[photo-fade_150ms_ease-out]',
+        className,
+      )}
+    >
       <h3 className="font-sans text-base font-semibold">{title}</h3>
       {children ? <p className="mt-1.5 text-sm text-muted">{children}</p> : null}
       {action ? <div className="mt-4">{action}</div> : null}
