@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { BookingBar } from '@/features/booking-bar/BookingBar'
@@ -9,6 +9,7 @@ import {
   clamp01,
   frameFromProgress,
 } from '@/features/hero/frameMath'
+import { heroSeen, markHeroSeen } from '@/features/hero/heroMemory'
 import { loadManifest, type HeroManifest } from '@/features/hero/manifest'
 import { bootDone } from '@/lib/bootGate'
 import { useFrameSequence } from '@/features/hero/useFrameSequence'
@@ -50,6 +51,9 @@ export function HeroSection() {
   const { t } = useTranslation()
   const sectionRef = useRef<HTMLElement>(null)
   const reducedMotion = useReducedMotion()
+  // Read once at mount: whether this visitor has already had the tour this
+  // session. Deciding per render would fight the mark-as-seen effects below.
+  const [seenAtMount] = useState(() => typeof window !== 'undefined' && heroSeen())
 
   const [manifest, setManifest] = useState<HeroManifest | null>(null)
   const [manifestError, setManifestError] = useState<string | null>(null)
@@ -96,7 +100,7 @@ export function HeroSection() {
     priorityRef.current = estimateInitialFrame(manifest)
 
     const intro = manifest.intro
-    if (!intro || !pinned || window.scrollY > window.innerHeight / 2) {
+    if (!intro || !pinned || seenAtMount || window.scrollY > window.innerHeight / 2) {
       // oxlint-disable-next-line react/set-state-in-effect
       setIntroDone(true)
       return
@@ -152,6 +156,30 @@ export function HeroSection() {
     })
     return cleanup
   }, [manifest, pinned, sequence])
+
+  // ---- Returning this session: land at the END of the tour -----------------
+  // The visitor has already scrubbed the venue (or left the page), so coming
+  // home puts them straight on the final interior frame with the booking bar
+  // up. Swiping UP from there replays the journey backwards — the tour stays
+  // one gesture away without ever being a toll gate. The jump runs in a
+  // microtask so it lands after SiteLayout's scroll-to-top for the
+  // navigation, still before paint; a restored deep position (back button)
+  // is detected by the scrollY check and left alone.
+  useLayoutEffect(() => {
+    if (!seenAtMount || !pinned) return
+    queueMicrotask(() => {
+      if (window.scrollY > 8) return
+      const scrollable = (PIN_VH / 100) * window.innerHeight - window.innerHeight
+      if (scrollable > 0) window.scrollTo(0, scrollable)
+    })
+  }, [seenAtMount, pinned])
+
+  // The tour counts as seen once the visitor is near its end, or when they
+  // leave the page having started it — either way, no second toll.
+  useEffect(() => {
+    if (progress >= 0.9) markHeroSeen()
+  }, [progress])
+  useEffect(() => () => markHeroSeen(), [])
 
   const introActive = pinned && !introDone && manifest?.intro !== undefined
 
