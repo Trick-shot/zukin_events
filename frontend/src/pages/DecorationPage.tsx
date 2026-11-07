@@ -4,6 +4,7 @@ import { KangaBorder } from '@/components/ui/KangaBorder'
 import { PageHeading } from '@/components/ui/PageHeading'
 import { Photo } from '@/components/ui/Photo'
 import { DECOR_PACKAGES, SOCIAL } from '@/content/site'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 /**
  * Real sets the team posted on @zukinevents.dar_dodoma, pulled 7 Nov 2026.
@@ -53,6 +54,7 @@ const PACKAGE_ICONS = [
 
 /** /decoration — the three packages and how styling works (110:2049 / 110:2331). */
 export function DecorationPage() {
+  usePageMeta(pageTitle('Decoration'), 'Three decoration packages dressed by Zukin Hall stylists, with colours and flowers agreed with you before the day.')
   return (
     <>
       <PageHeading

@@ -13,6 +13,7 @@ import { CONTACT } from '@/content/site'
 import { fromISODate, startOfToday, toISODate } from '@/lib/mockAvailability'
 import { submitSiteVisit } from '@/lib/mockBookings'
 import { cn } from '@/lib/cn'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 /**
  * /site-visit — B8 (Figma 97:1272 / 97:1404): pick a day, pick a slot, leave
@@ -29,6 +30,7 @@ const DAYS_OFFERED = 14
 type OfferedDay = { iso: string; weekday: string; dayOfMonth: string; closed: boolean }
 
 export function SiteVisitPage() {
+  usePageMeta(pageTitle('Book a site visit'), 'Book a free visit to Zukin Hall in Dodoma. About 30 minutes, both rooms, confirmed by SMS.')
   const [params] = useSearchParams()
 
   const days = useMemo<OfferedDay[]>(() => {

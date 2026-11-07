@@ -10,13 +10,39 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
 
-    <!-- Full SEO, Open Graph and LocalBusiness JSON-LD land in milestone (f). -->
+    <!-- LocalBusiness JSON-LD lands in milestone (f). -->
     <title>Zukin Hall | Event venue and decoration in Dodoma</title>
     <meta
       name="description"
       content="Zukin Hall is an event venue and decoration service in Dodoma, Tanzania."
     />
     <meta name="theme-color" content="#2a0a16" />
+
+    <!--
+      Open Graph, static. usePageMeta rewrites the title and description per
+      route, but most link unfurlers run no JavaScript, so these values are
+      what a shared link previews with whichever page was shared. Making the
+      preview match the page needs server rendering or prerendering, not more
+      tags here.
+
+      og:image is absolute on purpose. The Open Graph spec requires it, and
+      while Facebook resolves a relative path against og:url, several
+      unfurlers including X do not and simply show no image.
+
+      TODO: og:url and og:image carry the placeholder origin. Confirm the
+      real domain before launch, alongside robots.txt and sitemap.xml.
+    -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Zukin Hall" />
+    <meta property="og:url" content="https://zukinhall.co.tz/" />
+    <meta property="og:title" content="Zukin Hall | Event venue and decoration in Dodoma" />
+    <meta
+      property="og:description"
+      content="An event venue and decoration service in Dodoma, Tanzania, with two rooms, in-house stylists and on-site parking."
+    />
+    <meta property="og:image" content="https://zukinhall.co.tz/images/venue/hall_tables.jpg" />
+    <meta property="og:image:alt" content="The Zukin Hall main hall, tables laid for an event" />
+    <meta name="twitter:card" content="summary_large_image" />
     <style>
       /* First-paint splash: a plain white screen while the JS bundle loads,
          removed the moment React mounts (#root gets children). The flower

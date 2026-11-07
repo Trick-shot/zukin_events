@@ -5,9 +5,11 @@ import { KangaBorder } from '@/components/ui/KangaBorder'
 import { PageHeading } from '@/components/ui/PageHeading'
 import { Photo } from '@/components/ui/Photo'
 import { SPACES } from '@/content/site'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 /** /spaces — both rooms in full, after Figma 110:1627 / 110:1844. */
 export function SpacesPage() {
+  usePageMeta(pageTitle('Spaces'), 'Two rooms at Zukin Hall, both with tables, chairs, sound and lighting, with decoration chosen separately.')
   return (
     <>
       <PageHeading

@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { Container } from '@/components/layout/Container'
 import { Section } from '@/components/layout/Section'
 import { Button } from '@/components/ui/Button'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 export function NotFoundPage() {
+  usePageMeta(pageTitle('Page not found'), 'That page does not exist at Zukin Hall. Try the spaces, the gallery or contact reception.')
   const { t } = useTranslation()
 
   return (

@@ -7,6 +7,7 @@ import { CapacityRow } from '@/components/ui/CapacityRow'
 import { PageHeading } from '@/components/ui/PageHeading'
 import { Photo } from '@/components/ui/Photo'
 import { SPACES } from '@/content/site'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 /**
  * /spaces/:slug — one room in full, after Figma 92:425 / 92:669.
@@ -15,6 +16,17 @@ import { SPACES } from '@/content/site'
 export function SpaceDetailPage() {
   const { slug } = useParams()
   const space = SPACES.find((candidate) => candidate.slug === slug)
+
+  // Called before the redirect branch so the hook order never changes
+  // between renders; an unknown slug just sets the list page's wording for
+  // the instant before Navigate takes over.
+  usePageMeta(
+    pageTitle(space ? space.name : 'Spaces'),
+    space
+      ? `${space.name} at Zukin Hall: ${space.strap} Tables, chairs, sound and lighting included, with decoration chosen separately.`
+      : 'Two rooms at Zukin Hall, both with tables, chairs, sound and lighting.',
+  )
+
   if (!space) return <Navigate to="/spaces" replace />
 
   const other = SPACES.find((candidate) => candidate.slug !== slug)

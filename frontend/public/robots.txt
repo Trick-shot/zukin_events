@@ -1,0 +1,13 @@
+# Zukin Hall
+# TODO: confirm the live origin before launch. zukinhall.co.tz is a
+# placeholder and must match public/sitemap.xml and og:url in index.html.
+
+User-agent: *
+Allow: /
+
+# A booking lookup and a visit form. Nothing secret, but there is nothing
+# for a search result to land on either, and /track takes a phone number.
+Disallow: /track
+Disallow: /site-visit
+
+Sitemap: https://zukinhall.co.tz/sitemap.xml

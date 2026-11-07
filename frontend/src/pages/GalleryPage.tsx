@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { PageHeading } from '@/components/ui/PageHeading'
 import { Photo } from '@/components/ui/Photo'
 import { GALLERY_COLUMNS } from '@/content/site'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 /**
  * /gallery — a dominant feature image, then the three-column masonry, with a
@@ -14,6 +15,7 @@ import { GALLERY_COLUMNS } from '@/content/site'
  * would be pretending to have categories it does not.
  */
 export function GalleryPage() {
+  usePageMeta(pageTitle('Gallery'), 'Real photographs taken at Zukin Hall in Dodoma, nothing staged elsewhere and nothing rendered.')
   const flat = useMemo(() => GALLERY_COLUMNS.flat(), [])
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 

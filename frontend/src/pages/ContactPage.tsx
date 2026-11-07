@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { KangaBorder } from '@/components/ui/KangaBorder'
 import { PageHeading } from '@/components/ui/PageHeading'
 import { CONTACT } from '@/content/site'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 /** The entrance arch with its flowers, in the step-icon stroke language. */
 function ArchIllustration({ className }: { className?: string }) {
@@ -62,6 +63,7 @@ const CHANNELS = [
 ] as const
 
 export function ContactPage() {
+  usePageMeta(pageTitle('Contact'), 'Phone, WhatsApp and email for Zukin Hall reception in Dodoma, plus opening hours and directions.')
   return (
     <>
       <PageHeading

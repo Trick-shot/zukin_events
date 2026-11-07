@@ -11,6 +11,7 @@ import { Reveal } from '@/components/ui/Reveal'
 import { RingsMotif } from '@/components/ui/RingsMotif'
 import { BOOKING_STEPS, CONTACT, EVENT_TYPES, GALLERY_PREVIEW, SOCIAL, SPACES } from '@/content/site'
 import { HeroSection } from '@/features/hero/HeroSection'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 /**
  * A post tile that plays like a Reel: real event footage from the hall,
@@ -128,6 +129,7 @@ const STEP_ICONS = [
  * Copy in [brackets] is unconfirmed client data — see docs/UI_HANDOFF.md.
  */
 export function LandingPage() {
+  usePageMeta(pageTitle(), 'Zukin Hall is an event venue and decoration service in Dodoma, Tanzania, with two rooms, in-house stylists and on-site parking.')
   return (
     <>
       <HeroSection />

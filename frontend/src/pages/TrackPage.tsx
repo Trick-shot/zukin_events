@@ -13,6 +13,7 @@ import { StatusBadge } from '@/components/ui/StatusBadge'
 import { SuccessMark } from '@/components/ui/SuccessMark'
 import { CONTACT } from '@/content/site'
 import { trackBooking, type Booking, type BookingStatus } from '@/lib/mockBookings'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 /**
  * /track — B6 lookup + B7 status (Figma 97:748 / 97:924), no account: the
@@ -49,6 +50,7 @@ function formatDate(iso: string): string {
 }
 
 export function TrackPage() {
+  usePageMeta(pageTitle('Track my booking'), 'Check a Zukin Hall booking with the phone number you booked with and the reference from your SMS.')
   // Arriving from the hero widget carries ?phone=&ref= — prefill and look up
   // immediately, so the widget's "Find my booking" does what it says.
   const [searchParams] = useSearchParams()

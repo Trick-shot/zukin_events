@@ -1,5 +1,6 @@
 import { Container } from '@/components/layout/Container'
 import { PageHeading } from '@/components/ui/PageHeading'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 /**
  * /terms — booking terms, after Figma 94:1363 / 94:1481.
@@ -41,6 +42,7 @@ const SECTIONS = [
 ] as const
 
 export function TermsPage() {
+  usePageMeta(pageTitle('Booking terms'), 'How booking, deposits and cancellations work at Zukin Hall. Draft wording awaiting the owner review.')
   return (
     <>
       <PageHeading

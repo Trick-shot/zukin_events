@@ -16,6 +16,7 @@ import { CONTACT, DECOR_PACKAGES, SPACES, type SpaceSlug } from '@/content/site'
 import { checkDate, fromISODate, isPast, startOfToday, toISODate } from '@/lib/mockAvailability'
 import { submitRequest } from '@/lib/mockBookings'
 import { cn } from '@/lib/cn'
+import { pageTitle, usePageMeta } from '@/hooks/usePageMeta'
 
 /**
  * /book — the booking request flow (Figma B1, B5, B2, B3, B4).
@@ -66,6 +67,7 @@ function eventTypeLabel(value: string): string {
 }
 
 export function BookPage() {
+  usePageMeta(pageTitle('Book venue'), 'Request a date at Zukin Hall in three steps, with no account and no payment now. Reception confirms on the phone.')
   const [params] = useSearchParams()
 
   // Step 1 — prefilled from the hero widget's query string where present.
