@@ -114,7 +114,7 @@ describe('LandingPage social section', () => {
     renderWithProviders(<LandingPage />)
     const section = socialSection()
 
-    const tile = within(section).getByRole('link', { name: /more on instagram/i })
+    const tile = within(section).getByRole('link', { name: /more posts from .* on instagram/i })
     expect(tile).toHaveAttribute('href', SOCIAL.instagramUrl)
     expect(tile).toHaveAttribute('target', '_blank')
   })
@@ -123,7 +123,7 @@ describe('LandingPage social section', () => {
     renderWithProviders(<LandingPage />)
     const section = socialSection()
 
-    expect(within(section).getByRole('link', { name: /follow on instagram/i })).toHaveAttribute(
+    expect(within(section).getByRole('link', { name: /^follow .* on instagram/i })).toHaveAttribute(
       'href',
       SOCIAL.instagramUrl,
     )
@@ -154,5 +154,30 @@ describe('LandingPage social section', () => {
       expect(observed).not.toContain(video)
     }
     expect(HTMLMediaElement.prototype.play).not.toHaveBeenCalled()
+  })
+  it('names where every Instagram link goes, and hides the decorative badges', () => {
+    const { container } = renderWithProviders(<LandingPage />)
+    const section = socialSection()
+
+    // Every link out to Instagram says so, rather than leaving a screen
+    // reader with "link, image" or a bare caption.
+    const links = [...section.querySelectorAll('a')]
+    expect(links.length).toBeGreaterThan(0)
+    for (const link of links) {
+      expect(link.getAttribute('aria-label')).toMatch(/instagram/i)
+      expect(link.getAttribute('aria-label')).toContain(SOCIAL.instagramHandle)
+    }
+
+    // The play badge sits on top of each reel and carries no information the
+    // label does not already give.
+    const badges = section.querySelectorAll('span[aria-hidden="true"]')
+    expect(badges).toHaveLength(3)
+
+    // No stray decorative svg announces itself.
+    const loudSvgs = [...section.querySelectorAll('svg')].filter(
+      (svg) => svg.getAttribute('aria-hidden') !== 'true' && !svg.closest('[aria-hidden="true"]'),
+    )
+    expect(loudSvgs).toHaveLength(0)
+    expect(container).toBeTruthy()
   })
 })

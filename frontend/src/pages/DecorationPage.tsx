@@ -189,6 +189,7 @@ export function DecorationPage() {
               rel="noreferrer"
               variant="outline"
               className="shrink-0"
+              aria-label={`See all ${SOCIAL.posts} posts from ${SOCIAL.instagramHandle} on Instagram.`}
             >
               See all {SOCIAL.posts} posts
             </Button>
@@ -200,6 +201,7 @@ export function DecorationPage() {
                 href={`https://www.instagram.com/${item.post}/`}
                 target="_blank"
                 rel="noreferrer"
+                aria-label={`${item.alt}. Opens this post on Instagram.`}
                 className="group block overflow-hidden rounded-sm"
               >
                 <Photo

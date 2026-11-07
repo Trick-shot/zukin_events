@@ -45,7 +45,7 @@ function ReelTile({ src, poster, label }: { src: string; poster: string; label: 
       target="_blank"
       rel="noreferrer"
       className="relative block overflow-hidden rounded-sm"
-      aria-label={`${label}. Opens Instagram.`}
+      aria-label={`${label}. Opens ${SOCIAL.instagramHandle} on Instagram.`}
     >
       <video
         ref={videoRef}
@@ -384,6 +384,7 @@ export function LandingPage() {
               rel="noreferrer"
               variant="outline"
               className="shrink-0"
+              aria-label={`Follow ${SOCIAL.instagramHandle} on Instagram.`}
             >
               <IgGlyph className="size-[18px]" />
               Follow on Instagram
@@ -411,6 +412,7 @@ export function LandingPage() {
                 href={SOCIAL.instagramUrl}
                 target="_blank"
                 rel="noreferrer"
+                aria-label={`More posts from ${SOCIAL.instagramHandle} on Instagram.`}
                 className="on-dark flex aspect-square flex-col items-center justify-center gap-2.5 rounded-sm bg-wine-900 text-center transition-colors hover:bg-wine-800"
               >
                 <IgGlyph className="size-7 text-white" />

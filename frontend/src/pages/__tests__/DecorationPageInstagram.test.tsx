@@ -83,8 +83,28 @@ describe('DecorationPage Instagram band', () => {
     renderWithProviders(<DecorationPage />)
     const band = instagramBand()
 
-    const button = within(band).getByRole('link', { name: `See all ${SOCIAL.posts} posts` })
+    const button = within(band).getByRole('link', {
+      name: new RegExp(`See all ${SOCIAL.posts.replace(',', ',')} posts from`, 'i'),
+    })
     expect(button).toHaveAttribute('href', SOCIAL.instagramUrl)
     expect(button).toHaveAttribute('target', '_blank')
+  })
+  it('names where each photo link goes, keeping the alt text as the subject', () => {
+    renderWithProviders(<DecorationPage />)
+    const band = instagramBand()
+
+    const postLinks = [...band.querySelectorAll('a')].filter((a) =>
+      /instagram\.com\/(p|reel)\//.test(a.getAttribute('href') ?? ''),
+    )
+
+    for (const link of postLinks) {
+      const label = link.getAttribute('aria-label') ?? ''
+      expect(label).toMatch(/Opens this post on Instagram\.$/)
+      // The label leads with what the photo shows, so it is not eight
+      // identical "Opens this post" links in a row.
+      const alt = link.querySelector('img')?.getAttribute('alt') ?? ''
+      expect(alt).not.toBe('')
+      expect(label.startsWith(alt)).toBe(true)
+    }
   })
 })
