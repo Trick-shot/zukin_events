@@ -8,8 +8,26 @@ import { KangaBand } from '@/components/ui/KangaBand'
 import { Photo } from '@/components/ui/Photo'
 import { Reveal } from '@/components/ui/Reveal'
 import { RingsMotif } from '@/components/ui/RingsMotif'
-import { BOOKING_STEPS, CONTACT, EVENT_TYPES, GALLERY_PREVIEW, SPACES } from '@/content/site'
+import { BOOKING_STEPS, CONTACT, EVENT_TYPES, GALLERY_PREVIEW, SOCIAL, SPACES } from '@/content/site'
 import { HeroSection } from '@/features/hero/HeroSection'
+
+/** Instagram glyph in the site's own stroke language, inheriting currentColor. */
+function IgGlyph({ className }: { className?: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      className={className}
+    >
+      <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" />
+      <circle cx="12" cy="12" r="4.4" />
+      <circle cx="17.6" cy="6.4" r="1.2" fill="currentColor" stroke="none" />
+    </svg>
+  )
+}
 
 /**
  * Line illustrations for the four booking steps, in the icon set's own
@@ -268,6 +286,106 @@ export function LandingPage() {
             <footer className="mt-5 text-sm text-subtle">
               [Client name], [event], [month year]
             </footer>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* ---- Zukin on Instagram: earned proof, straight from the live
+             profile. Counts in content/site.ts; refresh before launch. ---- */}
+      <section aria-labelledby="social-heading" className="bg-paper pb-28">
+        <Container>
+          <Reveal className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <h2 id="social-heading" className="text-3xl sm:text-4xl">
+                The hall, as it happens.
+              </h2>
+              <p className="mt-3 text-muted">
+                Every wedding and send-off we host ends up on Instagram before the weekend is
+                over. See the hall in use, not just dressed for photos.
+              </p>
+              <dl className="mt-7 flex flex-wrap gap-x-10 gap-y-4">
+                {(
+                  [
+                    ['Followers', SOCIAL.followers],
+                    ['Posts', SOCIAL.posts],
+                    ['Instagram', SOCIAL.instagramHandle],
+                  ] as const
+                ).map(([label, value]) => (
+                  <div key={label}>
+                    <dt className="eyebrow">{label}</dt>
+                    <dd className="mt-1 text-[15px] font-medium text-ink">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <Button
+              as="a"
+              href={SOCIAL.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              variant="outline"
+              className="shrink-0"
+            >
+              <IgGlyph className="size-[18px]" />
+              Follow on Instagram
+            </Button>
+          </Reveal>
+
+          <div className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
+            {(
+              [
+                ['venue/stage_sofa.jpg', 'The stage set for a wedding, posted after the event'],
+                ['venue/centrepiece.jpg', 'A table centrepiece from a recent send-off'],
+                ['venue/arch.jpg', 'The flower arch, dressed for the day'],
+              ] as const
+            ).map(([src, alt], index) => (
+              <Reveal key={src} delay={index}>
+                <a
+                  href={SOCIAL.instagramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="relative block overflow-hidden rounded-sm"
+                  aria-label={`${alt}. Opens Instagram.`}
+                >
+                  <Photo
+                    src={src}
+                    alt=""
+                    width={640}
+                    height={640}
+                    className="aspect-square transition-transform duration-300 hover:scale-[1.03]"
+                  />
+                  {index === 1 ? (
+                    <span
+                      aria-hidden="true"
+                      className="absolute top-3 right-3 flex size-7 items-center justify-center rounded-pill bg-white/90"
+                    >
+                      <svg viewBox="0 0 10 12" className="ml-0.5 size-2.5 fill-ink">
+                        <path d="M0 0l10 6-10 6Z" />
+                      </svg>
+                    </span>
+                  ) : null}
+                </a>
+              </Reveal>
+            ))}
+            <Reveal delay={3}>
+              <a
+                href={SOCIAL.instagramUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="on-dark flex aspect-square flex-col items-center justify-center gap-2.5 rounded-sm bg-wine-900 text-center transition-colors hover:bg-wine-800"
+              >
+                <IgGlyph className="size-7 text-white" />
+                <span className="text-[15px] font-semibold text-white">More on Instagram</span>
+                <span className="text-[13px] text-on-dark-muted">
+                  {SOCIAL.followers} followers
+                </span>
+              </a>
+            </Reveal>
+          </div>
+
+          <Reveal as="p" className="mt-5 text-sm text-muted">
+            Real posts from real events. Tag {SOCIAL.instagramHandle} and the team reshares your
+            photos.
           </Reveal>
         </Container>
       </section>

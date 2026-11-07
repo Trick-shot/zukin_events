@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 import { BrandMark } from '@/components/layout/BrandMark'
 import { Container } from '@/components/layout/Container'
 import { LanguageToggle } from '@/components/layout/LanguageToggle'
-import { CONTACT } from '@/content/site'
+import { CONTACT, SOCIAL } from '@/content/site'
 
 /** Columns match the v3 Figma footer: Visit / Booking / Contact. */
 const VISIT = [
@@ -32,6 +32,39 @@ export function Footer() {
               <BrandMark size="md" />
               <p className="max-w-[300px] text-[15px] text-on-dark-muted">{t('brand.tagline')}</p>
               <p className="max-w-[300px] text-sm text-on-dark-faint">{CONTACT.address}</p>
+              {/* Only channels Zukin actually runs, from the live profile. */}
+              <dl className="mt-1 flex gap-8">
+                <div>
+                  <dt className="text-[11px] font-semibold tracking-[0.14em] text-on-dark-faint uppercase">
+                    Instagram
+                  </dt>
+                  <dd className="mt-0.5">
+                    <a
+                      href={SOCIAL.instagramUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-on-dark transition-opacity hover:opacity-75"
+                    >
+                      {SOCIAL.instagramHandle}
+                    </a>
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-[11px] font-semibold tracking-[0.14em] text-on-dark-faint uppercase">
+                    WhatsApp
+                  </dt>
+                  <dd className="mt-0.5">
+                    <a
+                      href={SOCIAL.whatsappUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-on-dark transition-opacity hover:opacity-75"
+                    >
+                      {SOCIAL.whatsapp}
+                    </a>
+                  </dd>
+                </div>
+              </dl>
             </div>
 
             <nav

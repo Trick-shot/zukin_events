@@ -163,9 +163,25 @@ export const DECOR_PACKAGES = [
   },
 ] as const
 
+/**
+ * Live social presence, read off the real profile on 7 Nov 2026. The counts
+ * are shown on the site because they are genuinely earned proof; refresh
+ * them (or wire the IG API) before launch so they never read stale.
+ */
+export const SOCIAL = {
+  instagramHandle: '@zukinevents.dar_dodoma',
+  instagramUrl: 'https://www.instagram.com/zukinevents.dar_dodoma/',
+  followers: '90.9K',
+  posts: '1,116',
+  countsAsOf: '7 Nov 2026',
+  whatsapp: '+255 788 044 382',
+  whatsappUrl: 'https://wa.me/255788044382',
+} as const
+
 export const CONTACT = {
   phone: '[+255 000 000 000]',
-  whatsapp: '[+255 000 000 000]',
+  /** From the Instagram bio's wa.me link; the voice line is still pending. */
+  whatsapp: '+255 788 044 382',
   email: '[bookings@zukinhall.co.tz]',
   address: '[Street / plot], Dodoma, Tanzania',
   hours: 'Monday to Saturday, 9:00 to 18:00',
