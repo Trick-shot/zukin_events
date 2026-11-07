@@ -1,3 +1,4 @@
+import { Reveal } from '@/components/ui/Reveal'
 import { KANGA_LINE } from '@/content/site'
 
 /**
@@ -16,9 +17,9 @@ export function KangaBand() {
   return (
     <div className="on-dark bg-wine-800 text-on-dark">
       <div style={zigzag} className="h-1.5" aria-hidden="true" />
-      <p lang="sw" className="px-5 py-4 text-center font-display text-lg tracking-wide">
+      <Reveal as="p" lang="sw" className="px-5 py-4 text-center font-display text-lg tracking-wide">
         {KANGA_LINE}
-      </p>
+      </Reveal>
       <div style={{ ...zigzag, transform: 'scaleY(-1)' }} className="h-1.5" aria-hidden="true" />
     </div>
   )

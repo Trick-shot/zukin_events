@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { CapacityRow } from '@/components/ui/CapacityRow'
 import { KangaBand } from '@/components/ui/KangaBand'
 import { Photo } from '@/components/ui/Photo'
+import { Reveal } from '@/components/ui/Reveal'
 import { RingsMotif } from '@/components/ui/RingsMotif'
 import { BOOKING_STEPS, CONTACT, EVENT_TYPES, GALLERY_PREVIEW, SPACES } from '@/content/site'
 import { HeroSection } from '@/features/hero/HeroSection'
@@ -58,7 +59,8 @@ export function LandingPage() {
 
       {/* ---- Statement + facts. The caps labels are data labels. ---- */}
       <section aria-labelledby="statement-heading" className="bg-paper pt-24 pb-20 xl:pt-28">
-        <Container>
+        <Reveal>
+          <Container>
           <h2 id="statement-heading" className="max-w-4xl text-3xl leading-snug sm:text-4xl">
             Guests arrive under a floral arch, walk a white aisle to the stage, and celebrate
             beneath chandeliers and hanging flowers.
@@ -77,13 +79,14 @@ export function LandingPage() {
                 <dd className="mt-1 text-[15px] font-medium text-ink">{value}</dd>
               </div>
             ))}
-          </dl>
-        </Container>
+            </dl>
+          </Container>
+        </Reveal>
       </section>
 
       {/* ---- Gallery band: full bleed, photography carries the colour. ---- */}
       <section id="gallery" aria-label="Photographs of the hall" className="bg-paper pb-24">
-        <div className="grid grid-cols-2 gap-2 px-2 sm:gap-3 sm:px-3 lg:grid-cols-3">
+        <Reveal className="grid grid-cols-2 gap-2 px-2 sm:gap-3 sm:px-3 lg:grid-cols-3">
           {GALLERY_PREVIEW.map((photo, i) => (
             <Photo
               key={photo.src}
@@ -97,30 +100,34 @@ export function LandingPage() {
               }
             />
           ))}
-        </div>
-        <Container className="mt-5 flex items-baseline justify-between gap-6">
+        </Reveal>
+        <Reveal>
+          <Container className="mt-5 flex items-baseline justify-between gap-6">
           <p className="text-sm text-muted">Every photo on this site was taken at Zukin Hall.</p>
           <Link to="/gallery" className="text-sm font-semibold text-ink underline-offset-4 hover:underline">
-            View the full gallery
-          </Link>
-        </Container>
+              View the full gallery
+            </Link>
+          </Container>
+        </Reveal>
       </section>
 
       {/* ---- The spaces, on sand. ---- */}
       <section id="spaces" aria-labelledby="spaces-heading" className="texture-kanga bg-sand py-24">
         <Container>
-          <div className="flex flex-wrap items-end justify-between gap-6">
+          <Reveal className="flex flex-wrap items-end justify-between gap-6">
             <h2 id="spaces-heading" className="text-3xl sm:text-4xl">
               Two rooms. Pick the one that fits your guest list.
             </h2>
             <Link to="/spaces" className="text-sm font-semibold text-ink underline-offset-4 hover:underline">
               Compare the spaces
             </Link>
-          </div>
+          </Reveal>
 
           <div className="mt-12 flex flex-col gap-16">
             {SPACES.map((space, index) => (
-              <article
+              <Reveal
+                as="article"
+                delay={index}
                 key={space.slug}
                 className={
                   'flex flex-col gap-8 lg:items-end ' +
@@ -153,7 +160,7 @@ export function LandingPage() {
                     See the {space.name.toLowerCase()}
                   </Button>
                 </div>
-              </article>
+              </Reveal>
             ))}
           </div>
         </Container>
@@ -164,7 +171,7 @@ export function LandingPage() {
       {/* ---- What we host: list, not tiles. ---- */}
       <section id="events" aria-labelledby="events-heading" className="bg-paper py-24">
         <Container className="flex flex-col gap-14 lg:flex-row lg:gap-24">
-          <div className="flex-1">
+          <Reveal className="flex-1">
             <h2 id="events-heading" className="max-w-xl text-3xl sm:text-4xl">
               From the first dance to the company dinner.
             </h2>
@@ -181,8 +188,8 @@ export function LandingPage() {
               ))}
               <li className="hairline" aria-hidden="true" />
             </ul>
-          </div>
-          <div className="lg:w-[420px]">
+          </Reveal>
+          <Reveal delay={1} className="lg:w-[420px]">
             <Photo
               src="venue/aisle.jpg"
               alt="The white aisle, lit and lined with flowers"
@@ -190,7 +197,7 @@ export function LandingPage() {
               height={1040}
               className="aspect-[4/5] rounded-card"
             />
-          </div>
+          </Reveal>
         </Container>
       </section>
 
@@ -202,7 +209,7 @@ export function LandingPage() {
       >
         <RingsMotif className="top-[-60px] right-[-120px] w-[560px]" />
         <Container className="relative flex flex-col gap-12 lg:flex-row lg:items-center lg:gap-20">
-          <div className="lg:w-[520px]">
+          <Reveal className="lg:w-[520px]">
             <Photo
               src="venue/hall_ceiling.jpg"
               alt="Hanging flowers and chandeliers, dressed by the Zukin stylists"
@@ -210,8 +217,8 @@ export function LandingPage() {
               height={970}
               className="aspect-[15/14] rounded-card"
             />
-          </div>
-          <div className="flex-1">
+          </Reveal>
+          <Reveal delay={1} className="flex-1">
             <h2 id="decoration-heading" className="text-3xl text-white sm:text-4xl">
               Decoration by our own stylists.
             </h2>
@@ -240,7 +247,7 @@ export function LandingPage() {
             <Button as="link" to="/decoration" variant="outline-light" className="mt-9">
               See the packages
             </Button>
-          </div>
+          </Reveal>
         </Container>
       </section>
 
@@ -253,7 +260,7 @@ export function LandingPage() {
           “
         </span>
         <Container className="relative">
-          <blockquote className="max-w-3xl">
+          <Reveal as="blockquote" className="max-w-3xl">
             <p className="font-display text-2xl leading-relaxed text-ink sm:text-3xl">
               “[A short quote from a real past client, used with their permission. It names the
               event and one thing they loved.]”
@@ -261,43 +268,43 @@ export function LandingPage() {
             <footer className="mt-5 text-sm text-subtle">
               [Client name], [event], [month year]
             </footer>
-          </blockquote>
+          </Reveal>
         </Container>
       </section>
 
       {/* ---- How booking works: a true sequence, so numbers are earned. ---- */}
       <section id="availability" aria-labelledby="booking-heading" className="texture-kanga bg-sand py-22">
         <Container>
-          <h2 id="booking-heading" className="max-w-xl text-3xl sm:text-4xl">
+          <Reveal as="h2" id="booking-heading" className="max-w-xl text-3xl sm:text-4xl">
             Booking is four steps. No account needed.
-          </h2>
+          </Reveal>
           <ol className="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
             {BOOKING_STEPS.map((step, index) => (
-              <li key={step.title} className="border-t border-line pt-5">
+              <Reveal as="li" delay={index} key={step.title} className="border-t border-line pt-5">
                 <div className="flex items-start justify-between gap-4 text-gold-dark">
                   {STEP_ICONS[index]}
                   <span className="font-display text-lg">{index + 1}</span>
                 </div>
                 <h3 className="mt-4 font-sans text-base font-semibold">{step.title}</h3>
                 <p className="mt-1.5 text-sm text-muted">{step.detail}</p>
-              </li>
+              </Reveal>
             ))}
           </ol>
-          <div className="mt-12 flex flex-wrap gap-4">
+          <Reveal className="mt-12 flex flex-wrap gap-4">
             <Button as="link" to="/book">
               Check your date
             </Button>
             <Button as="link" to="/track" variant="outline">
               Track my booking
             </Button>
-          </div>
+          </Reveal>
         </Container>
       </section>
 
       {/* ---- Find us. ---- */}
       <section id="location" aria-labelledby="location-heading" className="bg-paper py-24">
         <Container className="flex flex-col gap-12 lg:flex-row lg:gap-20">
-          <div className="flex-[3]">
+          <Reveal className="flex-[3]">
             <div className="min-h-72 overflow-hidden rounded-card bg-sand">
               {/* Keyless Google embed; swap the query for the exact plot once
                   the owner confirms the pin. */}
@@ -318,8 +325,8 @@ export function LandingPage() {
               <MapPin size={15} aria-hidden="true" className="text-gold-dark" />
               Open in Google Maps
             </a>
-          </div>
-          <div className="flex-[2]">
+          </Reveal>
+          <Reveal delay={1} className="flex-[2]">
             <h2 id="location-heading" className="text-3xl sm:text-4xl">
               Find us in Dodoma.
             </h2>
@@ -342,7 +349,7 @@ export function LandingPage() {
             <Button as="link" to="/contact" variant="outline" className="mt-8">
               Contact and directions
             </Button>
-          </div>
+          </Reveal>
         </Container>
       </section>
 
@@ -352,7 +359,8 @@ export function LandingPage() {
         className="on-dark relative overflow-hidden bg-wine-900 py-24 text-on-dark"
       >
         <RingsMotif className="bottom-[-120px] right-[-80px] w-[480px]" />
-        <Container className="relative flex flex-col items-start gap-8">
+        <Reveal>
+          <Container className="relative flex flex-col items-start gap-8">
           <h2 id="cta-heading" className="max-w-2xl text-3xl text-white sm:text-4xl">
             Come and see the hall.
           </h2>
@@ -366,8 +374,9 @@ export function LandingPage() {
             <Button as="link" to="/book" variant="outline-light">
               Check your date
             </Button>
-          </div>
-        </Container>
+            </div>
+          </Container>
+        </Reveal>
       </section>
     </>
   )
