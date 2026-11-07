@@ -354,11 +354,11 @@ export function LandingPage() {
           <Reveal className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <h2 id="social-heading" className="text-3xl sm:text-4xl">
-                The hall, as it happens.
+                Their events, as they happen.
               </h2>
               <p className="mt-3 text-muted">
-                Every wedding and send-off we host ends up on Instagram before the weekend is
-                over. See the hall in use, not just dressed for photos.
+                Every event the Zukin team dresses ends up on Instagram before the weekend is
+                over. These are their posts, playing as posted.
               </p>
               <dl className="mt-7 flex flex-wrap gap-x-10 gap-y-4">
                 {(
@@ -391,9 +391,9 @@ export function LandingPage() {
           <div className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
             {(
               [
-                ['table', 'A set table from a recent wedding, as posted'],
-                ['ceiling', 'The hanging flowers and chandelier, filmed at an event'],
-                ['stage', 'The stage and gold sofa, dressed for the day'],
+                ['sofa', 'The gold sofa staged in a sea of baby’s breath'],
+                ['team', 'The Zukin crew presenting a finished hall'],
+                ['ballroom', 'Wine drapery over a patterned dance floor'],
               ] as const
             ).map(([name, label], index) => (
               <Reveal key={name} delay={index}>

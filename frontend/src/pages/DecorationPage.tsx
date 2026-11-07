@@ -3,7 +3,23 @@ import { Button } from '@/components/ui/Button'
 import { KangaBorder } from '@/components/ui/KangaBorder'
 import { PageHeading } from '@/components/ui/PageHeading'
 import { Photo } from '@/components/ui/Photo'
-import { DECOR_PACKAGES } from '@/content/site'
+import { DECOR_PACKAGES, SOCIAL } from '@/content/site'
+
+/**
+ * Real sets the team posted on @zukinevents.dar_dodoma, pulled 7 Nov 2026.
+ * Each entry links to the actual post, so the photos stay verifiable proof
+ * rather than stock-looking decoration. Files live in /images/instagram/.
+ */
+const INSTAGRAM_SETS = [
+  { src: 'instagram/burgundy-ceiling.jpg', post: 'p/De9j73KC6BQ', alt: 'Burgundy ceiling drapery and twin chandeliers over a white aisle' },
+  { src: 'instagram/gold-canopy.jpg', post: 'p/DepfEGvC32K', alt: 'A gold beaded canopy gathered over the chandelier' },
+  { src: 'instagram/green-stage.jpg', post: 'p/De48Q_eCOdX', alt: 'A green and white set with garlands hanging over the stage' },
+  { src: 'instagram/arch-lavender.jpg', post: 'p/DepE73IC0Cl', alt: 'White arches, greenery and lavender around the sofa stage' },
+  { src: 'instagram/green-canopy.jpg', post: 'p/DemSFJWi3al', alt: 'A green ceiling canopy with purple drops and a chandelier' },
+  { src: 'instagram/wine-drapery.jpg', post: 'p/DelJkMzC_uk', alt: 'Wine and white drapery with a drop of white flowers' },
+  { src: 'instagram/chandelier-hearts.jpg', post: 'p/DeuahJIClVF', alt: 'A chandelier under greenery with lit hearts behind the stage' },
+  { src: 'instagram/magenta-ballroom.jpg', post: 'reel/DfUo7-7NnP8', alt: 'Magenta drapery over a patterned dance floor' },
+] as const
 
 /**
  * One line illustration per package, each drawing what the package adds:
@@ -148,6 +164,52 @@ export function DecorationPage() {
             Package contents and prices are being finalised with the stylists. Ask reception for
             this season's sheet.
           </p>
+        </Container>
+      </section>
+
+      {/* Recent sets from the team's Instagram, each linked to its post. */}
+      <section aria-labelledby="ig-sets-heading" className="bg-paper pb-20">
+        <Container>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 id="ig-sets-heading" className="max-w-xl text-3xl">
+                Straight from their feed.
+              </h2>
+              <p className="mt-3 max-w-lg text-[15px] text-muted">
+                Every look here is a real set the team built and posted. Tap a photo to open
+                the post on Instagram.
+              </p>
+            </div>
+            <Button
+              as="a"
+              href={SOCIAL.instagramUrl}
+              target="_blank"
+              rel="noreferrer"
+              variant="outline"
+              className="shrink-0"
+            >
+              See all {SOCIAL.posts} posts
+            </Button>
+          </div>
+          <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+            {INSTAGRAM_SETS.map((item) => (
+              <a
+                key={item.src}
+                href={`https://www.instagram.com/${item.post}/`}
+                target="_blank"
+                rel="noreferrer"
+                className="group block overflow-hidden rounded-sm"
+              >
+                <Photo
+                  src={item.src}
+                  alt={item.alt}
+                  width={900}
+                  height={1200}
+                  className="aspect-[3/4] transition-transform duration-300 group-hover:scale-[1.03]"
+                />
+              </a>
+            ))}
+          </div>
         </Container>
       </section>
 
