@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { MapPin } from 'lucide-react'
 import { Link } from 'react-router'
 
@@ -10,6 +11,62 @@ import { Reveal } from '@/components/ui/Reveal'
 import { RingsMotif } from '@/components/ui/RingsMotif'
 import { BOOKING_STEPS, CONTACT, EVENT_TYPES, GALLERY_PREVIEW, SOCIAL, SPACES } from '@/content/site'
 import { HeroSection } from '@/features/hero/HeroSection'
+
+/**
+ * A post tile that plays like a Reel: real event footage from the hall,
+ * muted, looping, square. Plays only while on screen (IntersectionObserver)
+ * and never under prefers-reduced-motion, where the poster frame stands in.
+ * Each loop is ~200-330KB, together lighter than a single Instagram embed
+ * iframe, and nothing here depends on Instagram staying reachable.
+ */
+function ReelTile({ src, poster, label }: { src: string; poster: string; label: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) void video.play().catch(() => {})
+        else video.pause()
+      },
+      { threshold: 0.35 },
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <a
+      href={SOCIAL.instagramUrl}
+      target="_blank"
+      rel="noreferrer"
+      className="relative block overflow-hidden rounded-sm"
+      aria-label={`${label}. Opens Instagram.`}
+    >
+      <video
+        ref={videoRef}
+        src={src}
+        poster={poster}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        className="aspect-square size-full object-cover"
+      />
+      <span
+        aria-hidden="true"
+        className="absolute top-3 right-3 flex size-7 items-center justify-center rounded-pill bg-white/90"
+      >
+        <svg viewBox="0 0 10 12" className="ml-0.5 size-2.5 fill-ink">
+          <path d="M0 0l10 6-10 6Z" />
+        </svg>
+      </span>
+    </a>
+  )
+}
 
 /** Instagram glyph in the site's own stroke language, inheriting currentColor. */
 function IgGlyph({ className }: { className?: string }) {
@@ -334,37 +391,17 @@ export function LandingPage() {
           <div className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
             {(
               [
-                ['venue/stage_sofa.jpg', 'The stage set for a wedding, posted after the event'],
-                ['venue/centrepiece.jpg', 'A table centrepiece from a recent send-off'],
-                ['venue/arch.jpg', 'The flower arch, dressed for the day'],
+                ['table', 'A set table from a recent wedding, as posted'],
+                ['ceiling', 'The hanging flowers and chandelier, filmed at an event'],
+                ['stage', 'The stage and gold sofa, dressed for the day'],
               ] as const
-            ).map(([src, alt], index) => (
-              <Reveal key={src} delay={index}>
-                <a
-                  href={SOCIAL.instagramUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="relative block overflow-hidden rounded-sm"
-                  aria-label={`${alt}. Opens Instagram.`}
-                >
-                  <Photo
-                    src={src}
-                    alt=""
-                    width={640}
-                    height={640}
-                    className="aspect-square transition-transform duration-300 hover:scale-[1.03]"
-                  />
-                  {index === 1 ? (
-                    <span
-                      aria-hidden="true"
-                      className="absolute top-3 right-3 flex size-7 items-center justify-center rounded-pill bg-white/90"
-                    >
-                      <svg viewBox="0 0 10 12" className="ml-0.5 size-2.5 fill-ink">
-                        <path d="M0 0l10 6-10 6Z" />
-                      </svg>
-                    </span>
-                  ) : null}
-                </a>
+            ).map(([name, label], index) => (
+              <Reveal key={name} delay={index}>
+                <ReelTile
+                  src={`/videos/social/${name}.mp4`}
+                  poster={`/videos/social/${name}.jpg`}
+                  label={label}
+                />
               </Reveal>
             ))}
             <Reveal delay={3}>
