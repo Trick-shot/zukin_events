@@ -15,13 +15,12 @@ const PageLoaderAnimation = lazy(() => import('@/components/ui/PageLoaderAnimati
  * loading, then fades out over 400ms, so every refresh reads as one calm
  * breath rather than a flash.
  *
- * It shows the rose, the brand's own loader animation, which is also what
- * PageLoader uses between routes. The bronze ring remains the fallback for
- * two cases it cannot cover: the lottie player is a lazy chunk and may not
- * have arrived yet, and under prefers-reduced-motion a looping flower is
- * exactly the kind of thing the setting asks us not to play. index.html's
- * first-paint splash is still a ring by necessity, since it renders before
- * any JavaScript exists to play an animation.
+ * It shows the flower, the brand's own loader animation, which is also what
+ * PageLoader uses between routes. The flower is the only mark: no ring
+ * behind it, and nothing stands in for it while the lazy player chunk is on
+ * its way, because a white screen briefly is quieter than one mark replaced
+ * by another. Under prefers-reduced-motion the flower is held still rather
+ * than swapped for something else.
  *
  * It mounts once per full page load (SiteLayout never remounts on SPA
  * navigation) and removes itself from the DOM when done. The hero's intro
@@ -64,28 +63,15 @@ export function BootVeil() {
 
   if (phase === 'gone') return null
 
-  /* The index.html splash ring, reused so the hand-off from static HTML to
-     React is invisible while the rose chunk is still on its way. */
-  const ring = (
-    <span
-      aria-hidden="true"
-      className="size-11 animate-spin rounded-pill border-[3px] border-line border-t-gold motion-reduce:animate-none"
-    />
-  )
-
   return (
     <div
       aria-hidden="true"
       style={{ transition: `opacity ${FADE_MS}ms ease-out`, opacity: phase === 'fading' ? 0 : 1 }}
       className="fixed inset-0 z-[90] flex items-center justify-center bg-paper"
     >
-      {reducedMotion ? (
-        ring
-      ) : (
-        <Suspense fallback={ring}>
-          <PageLoaderAnimation />
-        </Suspense>
-      )}
+      <Suspense fallback={null}>
+        <PageLoaderAnimation still={reducedMotion} />
+      </Suspense>
     </div>
   )
 }

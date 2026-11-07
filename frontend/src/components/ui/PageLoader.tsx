@@ -9,9 +9,13 @@ const PageLoaderAnimation = lazy(() => import('@/components/ui/PageLoaderAnimati
  *
  * Timing rules from the motion spec live here so no caller can forget them:
  * the loader only appears once a wait has lasted 300ms (fast loads never
- * flash it). The Lottie player itself is a lazy chunk; until it arrives —
- * and always under prefers-reduced-motion — a static bronze ring matching
- * the index.html splash shows instead, so the hand-off is seamless.
+ * flash it).
+ *
+ * The flower is the only mark; there is no ring behind or beside it. Under
+ * prefers-reduced-motion it is held still rather than swapped for something
+ * else, and while the lazy player chunk is still arriving the screen is
+ * simply the white it was always going to be, which is quieter than showing
+ * one mark and replacing it with another a moment later.
  */
 export function PageLoader({ label = 'Loading' }: { label?: string }) {
   const [visible, setVisible] = useState(false)
@@ -24,24 +28,15 @@ export function PageLoader({ label = 'Loading' }: { label?: string }) {
 
   if (!visible) return null
 
-  const ring = (
-    <span
-      aria-hidden="true"
-      className="size-11 animate-spin rounded-pill border-[3px] border-line border-t-gold motion-reduce:animate-none"
-    />
-  )
-
   return (
     <div
       role="status"
       aria-label={label}
       className="fixed inset-0 z-50 flex items-center justify-center bg-paper"
     >
-      {reducedMotion ? ring : (
-        <Suspense fallback={ring}>
-          <PageLoaderAnimation />
-        </Suspense>
-      )}
+      <Suspense fallback={null}>
+        <PageLoaderAnimation still={reducedMotion} />
+      </Suspense>
       <span className="sr-only">{label}</span>
     </div>
   )

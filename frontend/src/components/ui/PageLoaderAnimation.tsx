@@ -18,14 +18,20 @@ import loaderAnimation from '@/assets/lottie/zukin-loader-rose.json'
  */
 const SPEED = 6
 
-export default function PageLoaderAnimation() {
+/**
+ * `still` holds the flower on its first frame for prefers-reduced-motion.
+ * Both layers start at full opacity and full scale, so a paused flower is a
+ * whole flower, not an empty canvas waiting to bloom. That is what lets the
+ * ring fallback go: reduced motion still gets the mark, just not the motion.
+ */
+export default function PageLoaderAnimation({ still = false }: { still?: boolean }) {
   return (
     <Lottie
       src={loaderAnimation}
-      loop
-      autoplay
+      loop={!still}
+      autoplay={!still}
       speed={SPEED}
-      className="size-24"
+      className="size-40 sm:size-48"
       aria-hidden="true"
     />
   )
